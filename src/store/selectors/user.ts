@@ -4,11 +4,7 @@ import { UserState } from 'store/slices/user';
 
 export const currentUser = (state: UserState) => state.user;
 
-export const getSignedIn = (state: UserState) => {
-	if (state) {
-		return state.isSignedIn;
-	}
-};
+export const getIsSignedIn = (state: UserState) => get(state, 'isSignedIn', false);
 
 export const getUserId = createSelector(currentUser, state => get(state, 'user._id'));
 
