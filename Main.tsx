@@ -2,31 +2,32 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AuthStack, MainStack } from 'navigation';
 import { verifyUser } from 'network/auth';
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getIsSignedIn } from 'store/selectors/user';
+import { setUser, clearUser } from 'store/slices/user';
+import { LoginResponse } from 'utils/interface';
 
 const Main = () => {
+	const dispatch = useDispatch();
 	const isSignedIn = useSelector(getIsSignedIn);
 
 	useEffect(() => {
 		const fetchSession = async () => {
 			try {
-				const res = await verifyUser();
+				const user = (await verifyUser()) as LoginResponse;
 
-				if (typeof res === 'string') {
-					//TODO dispatch clear user
+				if (user.error) {
+					dispatch(clearUser());
 				} else {
-					//TODO: dispatch set user
+					dispatch(setUser(user));
 				}
-
-				console.log('RES', res);
 			} catch (error) {
 				throw error;
 			}
 		};
 
 		fetchSession();
-	}, []);
+	}, [dispatch]);
 
 	return <NavigationContainer>{isSignedIn ? <MainStack /> : <AuthStack />}</NavigationContainer>;
 };

@@ -9,3 +9,8 @@ export interface User {
 	createdAt: string;
 	updatedAt: string;
 }
+
+export interface LoginResponse {
+	user?: User;
+	error?: string;
+}
