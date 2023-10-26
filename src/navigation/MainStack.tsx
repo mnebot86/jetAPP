@@ -1,13 +1,35 @@
 import { Ionicons } from '@expo/vector-icons';
+import { Box } from '@gluestack-ui/themed';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
-import { Roster, Playbook, GameFilm, Chat } from 'screens';
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback } from 'react';
+import { Chat, GameFilm, Playbook, Roster, Settings } from 'screens';
 
 const Tab = createBottomTabNavigator();
 
+type Navigation = any;
+
 const MainStack = () => {
+	const navigation: Navigation = useNavigation();
+
+	const navigateToSettings = useCallback(() => {
+		navigation.navigate('Settings');
+	}, [navigation]);
+
 	return (
-		<Tab.Navigator>
+		<Tab.Navigator
+			screenOptions={{
+				headerRight: () => (
+					<Box mr="$8">
+						<Ionicons
+							name="settings"
+							size={24}
+							color="black"
+							onPress={navigateToSettings}
+						/>
+					</Box>
+				),
+			}}>
 			<Tab.Screen
 				name="Roster"
 				component={Roster}
@@ -37,6 +59,14 @@ const MainStack = () => {
 				component={Chat}
 				options={{
 					tabBarIcon: () => <Ionicons name="chatbox-ellipses" size={24} color="black" />,
+				}}
+			/>
+
+			<Tab.Screen
+				name="Settings"
+				component={Settings}
+				options={{
+					tabBarButton: () => null,
 				}}
 			/>
 		</Tab.Navigator>
