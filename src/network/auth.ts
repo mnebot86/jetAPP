@@ -20,3 +20,11 @@ export const login = async (credentials: LoginCredentials) => {
 		return res.data;
 	});
 };
+
+export const logout = async () => {
+	return apiRequest(async () => {
+		const res = await server.post('auth/logout');
+
+		return res.data;
+	});
+};
