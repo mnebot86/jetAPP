@@ -1,4 +1,4 @@
-export { default as Roster } from './Roster';
+export { default as Roster } from './roster/Roster';
 export { default as Playbook } from './Playbook';
 export { default as GameFilm } from './GameFilm';
 export { default as Chat } from './Chat';

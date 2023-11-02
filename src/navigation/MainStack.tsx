@@ -20,7 +20,7 @@ const MainStack = () => {
 		<Tab.Navigator
 			screenOptions={{
 				headerRight: () => (
-					<Box mr="$8">
+					<Box mr="$4">
 						<Ionicons
 							name="settings"
 							size={24}
