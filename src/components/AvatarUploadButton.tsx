@@ -6,7 +6,7 @@ import React, { useCallback, useEffect } from 'react';
 import { AvatarResponse } from 'utils/interface';
 
 interface AvatarUploadButtonProps {
-	id: string;
+	id: string | null;
 	profileImage: string | null;
 	setProfileImage: (image: string) => void;
 	setAvatar: (avatar: AvatarResponse) => void;
@@ -38,7 +38,7 @@ const AvatarUploadButton = ({
 	};
 
 	const sendImage = useCallback(async () => {
-		if (!profileImage) {
+		if (!profileImage || !id) {
 			return;
 		}
 
@@ -52,11 +52,10 @@ const AvatarUploadButton = ({
 			type: `image/${type}`,
 		} as any);
 
-		formData.append('uniqueId', id);
+		formData.append('uniqueId', id as string);
 
 		try {
 			const avatarData = await uploadAvatar(formData);
-
 			setAvatar(avatarData as AvatarResponse);
 		} catch (error) {
 			console.error('Error uploading avatar', error);
@@ -64,13 +63,13 @@ const AvatarUploadButton = ({
 	}, [profileImage, id, setAvatar]);
 
 	useEffect(() => {
-		if (profileImage) {
+		if (profileImage && id) {
 			sendImage();
 		}
-	}, [profileImage, sendImage]);
+	}, [profileImage, sendImage, id]);
 
 	return (
-		<Button action="secondary" onPress={pickImage}>
+		<Button action="secondary" onPress={pickImage} disabled={!id}>
 			<ButtonIcon as={Image} />
 		</Button>
 	);

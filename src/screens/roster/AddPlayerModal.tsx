@@ -24,8 +24,17 @@ import {
 import { AvatarUploadButton } from 'components';
 import PlaceHolder from 'images/placeholders/person.png';
 import { Camera } from 'lucide-react-native';
-import React, { useCallback, useState } from 'react';
+import { deleteAvatar } from 'network/avatar';
+import React, { useCallback, useState, useMemo } from 'react';
 import { AvatarResponse } from 'utils/interface';
+
+/**
+ * TODO: Error Messaging
+ * TODO: Generate a new id when modal opens and on save to player
+ * TODO: On Submit - clear form, avatar and success message
+ * TODO: Update player list
+ * TODO: Disable Avatar button unless name fields are filled
+ */
 
 interface AddPlayerModalProps {
 	isOpen: boolean;
@@ -49,16 +58,45 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 		[formData]
 	);
 
+	const onCancel = useCallback(async () => {
+		console.log(avatar);
+		if (avatar) {
+			try {
+				const deletedAvatar = await deleteAvatar(avatar.imageId);
+				console.log(deletedAvatar);
+			} catch (error) {
+				throw error;
+			}
+		}
+
+		setAvatar(null);
+		setFormData({
+			firstName: '',
+			lastName: '',
+			medical: '',
+			allergies: '',
+		});
+		setProfileImage(null);
+
+		toggle();
+	}, [avatar, toggle]);
+
 	const { firstName, lastName, medical, allergies } = formData;
 
+	const imageUniqueId: string | null = useMemo(() => {
+		if (!firstName || !lastName) return null;
+
+		return `${firstName.toLowerCase()}-${lastName.toLowerCase()}`;
+	}, [firstName, lastName]);
+
 	return (
-		<Modal isOpen={isOpen} onClose={toggle} avoidKeyboard>
+		<Modal isOpen={isOpen} onClose={onCancel} avoidKeyboard>
 			<ModalBackdrop />
 			<ModalContent>
 				<ModalHeader>
 					<Heading size="lg">Add New Player</Heading>
 
-					<ModalCloseButton onPress={toggle}>
+					<ModalCloseButton onPress={onCancel}>
 						<Icon as={CloseIcon} />
 					</ModalCloseButton>
 				</ModalHeader>
@@ -70,6 +108,7 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 							size="xl"
 							alt="profile"
 							borderRadius={100}
+							borderWidth={profileImage ? 4 : 0}
 						/>
 					</Center>
 
@@ -132,7 +171,7 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 
 						<ButtonGroup>
 							<AvatarUploadButton
-								id={`${formData.firstName}-${formData.lastName}`}
+								id={imageUniqueId}
 								setProfileImage={setProfileImage}
 								profileImage={profileImage}
 								setAvatar={setAvatar}
@@ -148,7 +187,7 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 				<ModalFooter>
 					<ButtonGroup>
 						<Button variant="outline" onPress={toggle}>
-							<ButtonText>Cancel</ButtonText>
+							<ButtonText onPress={onCancel}>Cancel</ButtonText>
 						</Button>
 
 						<Button>
