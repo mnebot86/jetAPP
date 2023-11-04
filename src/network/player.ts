@@ -12,7 +12,13 @@ interface PlayerData {
 
 export const createPlayer = async (data: PlayerData) => {
 	return apiRequest(async () => {
-		const res = await server.post('/players', data);
+		const config = {
+			method: 'post',
+			url: 'players',
+			data,
+		};
+
+		const res = await server(config);
 
 		return res.data as PlayerResponse;
 	});

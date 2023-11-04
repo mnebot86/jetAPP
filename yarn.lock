@@ -10395,6 +10395,7 @@ __metadata:
     react-native-svg: "npm:^13.14.0"
     react-native-testing-library: "npm:^6.0.0"
     react-native-typescript-transformer: "npm:^1.2.13"
+    react-native-uuid: "npm:^2.0.1"
     react-redux: "npm:^8.1.3"
     react-test-renderer: "npm:^18.2.0"
     ts-jest: "npm:^29.1.1"
@@ -12876,6 +12877,13 @@ __metadata:
     react-native: ">=0.45.0"
     typescript: ">=2"
   checksum: 450b62e3a6811fa2c4ed16868181d120a2aeadd2c64ffa6ab73a937fb4b87d25f3b0a5ff3bba1c76fc7293fa1a557a3f8fa19393c07a218510d8b62adb4ee010
+  languageName: node
+  linkType: hard
+
+"react-native-uuid@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "react-native-uuid@npm:2.0.1"
+  checksum: f938337ff98d1ce55fed69fd3b1fa199767df0be0358773d26f4ec53dd0f3f894852d8f2cbce30d3c0ab9b1ba8640bc87fdf688f9653d202b0422c7d763767c9
   languageName: node
   linkType: hard
 

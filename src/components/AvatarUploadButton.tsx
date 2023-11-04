@@ -2,11 +2,11 @@ import { Button, ButtonIcon } from '@gluestack-ui/themed';
 import * as ImagePicker from 'expo-image-picker';
 import { Image } from 'lucide-react-native';
 import { uploadAvatar } from 'network/avatar';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import uuid from 'react-native-uuid';
 import { AvatarResponse } from 'utils/interface';
 
 interface AvatarUploadButtonProps {
-	id: string | null;
 	profileImage: string | null;
 	setProfileImage: (image: string) => void;
 	setAvatar: (avatar: AvatarResponse) => void;
@@ -16,8 +16,9 @@ const AvatarUploadButton = ({
 	profileImage,
 	setProfileImage,
 	setAvatar,
-	id,
 }: AvatarUploadButtonProps) => {
+	const [id, setId] = useState<unknown>(null);
+
 	const pickImage = async () => {
 		const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -60,16 +61,20 @@ const AvatarUploadButton = ({
 		} catch (error) {
 			console.error('Error uploading avatar', error);
 		}
-	}, [profileImage, id, setAvatar]);
+	}, [profileImage, setAvatar, id]);
 
 	useEffect(() => {
-		if (profileImage && id) {
+		setId(uuid.v4() as string);
+	}, []);
+
+	useEffect(() => {
+		if (profileImage) {
 			sendImage();
 		}
-	}, [profileImage, sendImage, id]);
+	}, [profileImage, sendImage]);
 
 	return (
-		<Button action="secondary" onPress={pickImage} disabled={!id}>
+		<Button action="secondary" onPress={pickImage}>
 			<ButtonIcon as={Image} />
 		</Button>
 	);

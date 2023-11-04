@@ -18,30 +18,37 @@ import {
 	FormControlLabelText,
 	Input,
 	InputField,
-	Image as Img,
+	Image,
 	Center,
+	ButtonSpinner,
+	FormControlErrorIcon,
+	FormControlError,
+	FormControlErrorText,
 } from '@gluestack-ui/themed';
 import { AvatarUploadButton } from 'components';
-import PlaceHolder from 'images/placeholders/person.png';
-import { Camera } from 'lucide-react-native';
+import { PlaceHolder } from 'images/placeholders';
+import { AlertCircleIcon, Camera } from 'lucide-react-native';
 import { deleteAvatar } from 'network/avatar';
+import { createPlayer } from 'network/player';
 import React, { useCallback, useState, useMemo } from 'react';
-import { AvatarResponse } from 'utils/interface';
-
-/**
- * TODO: Error Messaging
- * TODO: Generate a new id when modal opens and on save to player
- * TODO: On Submit - clear form, avatar and success message
- * TODO: Update player list
- * TODO: Disable Avatar button unless name fields are filled
- */
+import { AvatarResponse, PlayerResponse } from 'utils/interface';
 
 interface AddPlayerModalProps {
 	isOpen: boolean;
 	toggle: () => void;
 }
 
+interface PlayerData {
+	avatar: AvatarResponse;
+	firstName: string;
+	lastName: string;
+	medicalCondition: string[] | [];
+	allergies: string[] | [];
+}
+
 const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
+	const [error, setError] = useState<string | null>(null);
+	const [isLoading, setLoading] = useState(false);
 	const [profileImage, setProfileImage] = useState<string | null>(null);
 	const [avatar, setAvatar] = useState<AvatarResponse | null>(null);
 	const [formData, setFormData] = useState({
@@ -51,6 +58,8 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 		allergies: '',
 	});
 
+	const { firstName, lastName, medical, allergies } = formData;
+
 	const handleInputChange = useCallback(
 		(fieldName: string, value: string) => {
 			setFormData({ ...formData, [fieldName]: value });
@@ -58,40 +67,89 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 		[formData]
 	);
 
+	const handleSubmit = useCallback(async () => {
+		setLoading(true);
+
+		const data = {
+			avatar,
+			firstName,
+			lastName,
+			medicalCondition: medical ? medical.split(', ') : [],
+			allergies: allergies ? allergies.split(', ') : [],
+		} as PlayerData;
+
+		try {
+			const player = (await createPlayer(data)) as PlayerResponse;
+
+			if (player.error) {
+				setError(player.error);
+
+				if (avatar) {
+					try {
+						const deletedAvatar = await deleteAvatar(avatar.imageId);
+						console.log(deletedAvatar);
+					} catch (error) {
+						throw error;
+					}
+				}
+			} else {
+				toggle();
+			}
+		} catch (error) {
+			setError(error as any);
+
+			throw error;
+		} finally {
+			setLoading(false);
+
+			setAvatar(null);
+
+			setFormData({
+				firstName: '',
+				lastName: '',
+				medical: '',
+				allergies: '',
+			});
+
+			setProfileImage(null);
+
+			setError(null);
+		}
+	}, [allergies, avatar, firstName, lastName, medical, toggle]);
+
 	const onCancel = useCallback(async () => {
-		console.log(avatar);
 		if (avatar) {
 			try {
-				const deletedAvatar = await deleteAvatar(avatar.imageId);
-				console.log(deletedAvatar);
+				await deleteAvatar(avatar.imageId);
 			} catch (error) {
 				throw error;
 			}
 		}
 
 		setAvatar(null);
+
 		setFormData({
 			firstName: '',
 			lastName: '',
 			medical: '',
 			allergies: '',
 		});
+
 		setProfileImage(null);
+
+		setError(null);
 
 		toggle();
 	}, [avatar, toggle]);
 
-	const { firstName, lastName, medical, allergies } = formData;
-
-	const imageUniqueId: string | null = useMemo(() => {
-		if (!firstName || !lastName) return null;
-
-		return `${firstName.toLowerCase()}-${lastName.toLowerCase()}`;
-	}, [firstName, lastName]);
+	const isDisabled = useMemo(() => {
+		return !firstName || !lastName || !avatar;
+	}, [firstName, lastName, avatar]);
 
 	return (
 		<Modal isOpen={isOpen} onClose={onCancel} avoidKeyboard>
 			<ModalBackdrop />
+			
 			<ModalContent>
 				<ModalHeader>
 					<Heading size="lg">Add New Player</Heading>
@@ -103,12 +161,13 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 
 				<ModalBody>
 					<Center mb={16}>
-						<Img
+						<Image
 							source={profileImage ? profileImage : PlaceHolder}
 							size="xl"
 							alt="profile"
 							borderRadius={100}
 							borderWidth={profileImage ? 4 : 0}
+							role="img"
 						/>
 					</Center>
 
@@ -147,6 +206,7 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 							<InputField
 								value={medical}
 								onChangeText={text => handleInputChange('medical', text)}
+								placeholder="comma separate, asthma, etc"
 							/>
 						</Input>
 					</FormControl>
@@ -160,18 +220,18 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 							<InputField
 								value={allergies}
 								onChangeText={text => handleInputChange('allergies', text)}
+								placeholder="comma separate, tree nuts, etc"
 							/>
 						</Input>
 					</FormControl>
 
-					<FormControl mb="$4">
+					<FormControl mb="$4" isInvalid={!!error}>
 						<FormControlLabel>
 							<FormControlLabelText mr="$3">Upload Image</FormControlLabelText>
 						</FormControlLabel>
 
 						<ButtonGroup>
 							<AvatarUploadButton
-								id={imageUniqueId}
 								setProfileImage={setProfileImage}
 								profileImage={profileImage}
 								setAvatar={setAvatar}
@@ -181,6 +241,11 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 								<ButtonIcon as={Camera} />
 							</Button>
 						</ButtonGroup>
+
+						<FormControlError mt="$3">
+							<FormControlErrorIcon as={AlertCircleIcon} />
+							<FormControlErrorText>{error}</FormControlErrorText>
+						</FormControlError>
 					</FormControl>
 				</ModalBody>
 
@@ -190,8 +255,12 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 							<ButtonText onPress={onCancel}>Cancel</ButtonText>
 						</Button>
 
-						<Button>
-							<ButtonText>Submit</ButtonText>
+						<Button onPress={handleSubmit} disabled={isDisabled}>
+							{isLoading ? (
+								<ButtonSpinner animating />
+							) : (
+								<ButtonText>Submit</ButtonText>
+							)}
 						</Button>
 					</ButtonGroup>
 				</ModalFooter>
