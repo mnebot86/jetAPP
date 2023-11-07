@@ -25,7 +25,8 @@ import {
 	FormControlError,
 	FormControlErrorText,
 } from '@gluestack-ui/themed';
-import { AvatarUploadButton } from 'components';
+import { AvatarUploadButton, Cam } from 'components';
+import Preview from 'components/Camera/Preview';
 import { PlaceHolder } from 'images/placeholders';
 import { AlertCircleIcon, Camera } from 'lucide-react-native';
 import { deleteAvatar } from 'network/avatar';
@@ -47,6 +48,8 @@ interface PlayerData {
 }
 
 const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
+	const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+	const [isCameraOpen, setIsCameraOpen] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [isLoading, setLoading] = useState(false);
 	const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -59,6 +62,14 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 	});
 
 	const { firstName, lastName, medical, allergies } = formData;
+
+	const togglePreviewOpen = useCallback(() => {
+		setIsPreviewOpen(!isPreviewOpen);
+	}, [isPreviewOpen]);
+
+	const toggleCameraOpen = useCallback(() => {
+		setIsCameraOpen(!isCameraOpen);
+	}, [isCameraOpen]);
 
 	const handleInputChange = useCallback(
 		(fieldName: string, value: string) => {
@@ -149,7 +160,7 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 	return (
 		<Modal isOpen={isOpen} onClose={onCancel} avoidKeyboard>
 			<ModalBackdrop />
-			
+
 			<ModalContent>
 				<ModalHeader>
 					<Heading size="lg">Add New Player</Heading>
@@ -237,7 +248,7 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 								setAvatar={setAvatar}
 							/>
 
-							<Button>
+							<Button onPress={toggleCameraOpen}>
 								<ButtonIcon as={Camera} />
 							</Button>
 						</ButtonGroup>
@@ -265,6 +276,22 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 					</ButtonGroup>
 				</ModalFooter>
 			</ModalContent>
+
+			{isCameraOpen ? (
+				<Cam
+					onClose={toggleCameraOpen}
+					setProfileImage={setProfileImage}
+					togglePreviewOpen={togglePreviewOpen}
+				/>
+			) : null}
+
+			{isPreviewOpen ? (
+				<Preview
+					profileImage={profileImage}
+					togglePreviewOpen={togglePreviewOpen}
+					toggleCameraOpen={toggleCameraOpen}
+				/>
+			) : null}
 		</Modal>
 	);
 };

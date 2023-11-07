@@ -1,20 +1,24 @@
-import { MaterialIcons } from '@expo/vector-icons';
-import { Box, CloseIcon, HStack, Icon } from '@gluestack-ui/themed';
-import { Camera, CameraType } from 'expo-camera';
+import { Box, CloseIcon, HStack, Icon, Pressable } from '@gluestack-ui/themed';
+import { Camera, CameraType, FlashMode } from 'expo-camera';
+import Constants from 'expo-constants';
+import { SwitchCamera } from 'lucide-react-native';
 import React, { useState, useCallback, useEffect } from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
 
+import FlashButton from './FlashButton';
 import { PhotoButton } from './PhotoButton';
 
 interface CamProps {
 	onClose: () => void;
-	setImagePlaceholder: (url: string) => void;
+	setProfileImage: (url: string) => void;
+	togglePreviewOpen: () => void;
 }
 
-const Cam = ({ onClose, setImagePlaceholder }: CamProps) => {
+const Cam = ({ onClose, setProfileImage, togglePreviewOpen }: CamProps) => {
 	const [type, setType] = useState(CameraType.back);
 	const [permission, requestPermission] = Camera.useCameraPermissions();
 	const [camera, setCamera] = useState<Camera | undefined>(undefined);
+	const [flashMode, setFlashMode] = useState(FlashMode.auto);
 
 	useEffect(() => {
 		if (!permission) {
@@ -33,37 +37,68 @@ const Cam = ({ onClose, setImagePlaceholder }: CamProps) => {
 		if (camera) {
 			const data = await camera.takePictureAsync(undefined);
 
-			setImagePlaceholder(data.uri);
+			setProfileImage(data.uri);
+			togglePreviewOpen();
 			onClose();
 		}
-	}, [camera, onClose, setImagePlaceholder]);
+	}, [camera, onClose, setProfileImage, togglePreviewOpen]);
+
+	const toggleFlash = useCallback(() => {
+		setFlashMode(prevMode => {
+			switch (prevMode) {
+				case FlashMode.on:
+					return FlashMode.off;
+				case FlashMode.off:
+					return FlashMode.auto;
+				default:
+					return FlashMode.on;
+			}
+		});
+	}, []);
 
 	return (
-		<Box flex={1} position="absolute" top="$0" right={0} left={0} bottom={0} zIndex={1}>
+		<Box
+			flex={1}
+			position="absolute"
+			top="$0"
+			right={0}
+			left={0}
+			bottom={0}
+			paddingHorizontal={12}
+			bg="black">
+			<HStack
+				m={20}
+				justifyContent="space-between"
+				alignItems="center"
+				paddingTop={Constants.statusBarHeight}>
+				<Pressable onPress={toggleCameraType}>
+					<Icon as={SwitchCamera} size="lg" color="white" />
+				</Pressable>
+
+				<FlashButton toggle={toggleFlash} flashMode={flashMode} />
+
+				<TouchableOpacity onPress={onClose}>
+					<Icon as={CloseIcon} size="lg" color="white" />
+				</TouchableOpacity>
+			</HStack>
+
 			<Camera
-				style={{ flex: 1, justifyContent: 'space-between' }}
+				style={{
+					flex: 1,
+					borderColor: '#FFFFFF99',
+					borderWidth: 1,
+				}}
 				type={type}
 				ref={ref => {
 					if (ref) setCamera(ref);
 				}}
-				ratio="1:1">
-				<HStack m={20} justifyContent="space-between">
-					<MaterialIcons
-						name="flip-camera-ios"
-						size={30}
-						color="white"
-						onPress={toggleCameraType}
-					/>
+				ratio="1:1"
+				flashMode={flashMode}
+			/>
 
-					<TouchableOpacity onPress={onClose}>
-						<Icon as={CloseIcon} size="lg" color="white" />
-					</TouchableOpacity>
-				</HStack>
-
-				<HStack bg="black" m={20} mt="$full" justifyContent="center">
-					<PhotoButton takePicture={takePicture} />
-				</HStack>
-			</Camera>
+			<HStack m={20} mb={30} justifyContent="center">
+				<PhotoButton takePicture={takePicture} />
+			</HStack>
 		</Box>
 	);
 };

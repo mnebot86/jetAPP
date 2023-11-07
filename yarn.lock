@@ -8003,7 +8003,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-constants@npm:~14.4.2":
+"expo-constants@npm:14.4.2, expo-constants@npm:~14.4.2":
   version: 14.4.2
   resolution: "expo-constants@npm:14.4.2"
   dependencies:
@@ -8023,6 +8023,15 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: 3109186f554b06da53c9a2fcd3895d9145ab88818f140e3a11bdea55e9c56564b5267f4fae0ca4a36c4781d23b3eaabee5c50887f98614fb810e6896e0e5f89a
+  languageName: node
+  linkType: hard
+
+"expo-face-detector@npm:12.4.0":
+  version: 12.4.0
+  resolution: "expo-face-detector@npm:12.4.0"
+  peerDependencies:
+    expo: "*"
+  checksum: 40a4c90d94ff159f5517f005bbf77e87da5faea9e5a73eb9d11c416e3dd4d6a2b845d239ff0939967fb596fc9691f01f9e561ec3110e347f339da98f25956667
   languageName: node
   linkType: hard
 
@@ -10377,7 +10386,9 @@ __metadata:
     eslint-config-universe: "npm:^12.0.0"
     expo: "npm:^49.0.0"
     expo-camera: "npm:13.6.0"
+    expo-constants: "npm:14.4.2"
     expo-device: "npm:5.6.0"
+    expo-face-detector: "npm:12.4.0"
     expo-image-picker: "npm:14.5.0"
     expo-status-bar: "npm:~1.7.1"
     jest: "npm:^29.7.0"
