@@ -1,21 +1,59 @@
 import { Box, Text } from '@gluestack-ui/themed';
-import React, { useCallback, useState } from 'react';
+import { getPlayers } from 'network/player';
+import { socket } from 'network/socket';
+import React, { useCallback, useEffect, useState } from 'react';
+import { PlayerResponse } from 'utils/interface';
 
 import AddPlayerModal from './AddPlayerModal';
 import ControlsHeader from './ControlsHeader';
+import PlayersList from './PlayersList';
 
 const Roster = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [players, setPlayers] = useState<PlayerResponse[]>([]);
 
 	const toggleModal = useCallback(() => {
 		setIsModalOpen(!isModalOpen);
 	}, [isModalOpen]);
 
+	useEffect(() => {
+		const fetchPlayers = async () => {
+			setIsLoading(true);
+
+			try {
+				const res = await getPlayers();
+				setPlayers(res as PlayerResponse[]);
+			} catch (error) {
+				throw error;
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		fetchPlayers();
+	}, []);
+
+	useEffect(() => {
+		socket.on('new_player', newPlayer => {
+			setPlayers(prev => [...prev, newPlayer]);
+		});
+
+		return () => {
+			socket.off('new_player');
+		};
+	}, []);
+
 	return (
 		<Box flex={1}>
 			<ControlsHeader toggle={toggleModal} />
 
-			<Text alignSelf="center">Roster</Text>
+			{!players.length ? (
+				<Text textAlign="center">Add Players</Text>
+			) : (
+				<PlayersList players={players} />
+			)}
+
 			<AddPlayerModal isOpen={isModalOpen} toggle={toggleModal} />
 		</Box>
 	);

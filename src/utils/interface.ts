@@ -36,6 +36,7 @@ export interface AVATAR {
 }
 
 export interface PlayerResponse {
+	_id: string;
 	firstName: string;
 	lastName: string;
 	avatar: {

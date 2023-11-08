@@ -23,3 +23,16 @@ export const createPlayer = async (data: PlayerData) => {
 		return res.data as PlayerResponse;
 	});
 };
+
+export const getPlayers = async () => {
+	return apiRequest(async () => {
+		const config = {
+			method: 'get',
+			url: 'players',
+		};
+
+		const res = await server(config);
+
+		return res.data as PlayerResponse[];
+	});
+};

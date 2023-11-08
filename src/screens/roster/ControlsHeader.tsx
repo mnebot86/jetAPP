@@ -9,7 +9,12 @@ interface ControlsHeaderProps {
 const ControlsHeader = ({ toggle }: ControlsHeaderProps) => {
 	return (
 		<HStack p={8} justifyContent="space-between">
-			<Button borderRadius="$full" paddingHorizontal="$2.5" size="sm" onPress={toggle}>
+			<Button
+				borderRadius="$full"
+				paddingHorizontal="$2.5"
+				size="sm"
+				onPress={toggle}
+				bg="black">
 				<ButtonIcon as={UserPlus} />
 			</Button>
 		</HStack>

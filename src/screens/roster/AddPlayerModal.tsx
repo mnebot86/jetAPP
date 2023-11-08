@@ -97,8 +97,7 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 
 				if (avatar) {
 					try {
-						const deletedAvatar = await deleteAvatar(avatar.imageId);
-						console.log(deletedAvatar);
+						await deleteAvatar(avatar.imageId);
 					} catch (error) {
 						throw error;
 					}
