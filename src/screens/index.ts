@@ -1,5 +1,5 @@
 export { default as Roster } from './roster/Roster';
-export { default as Playbook } from './Playbook';
+export { default as Playbook } from './playbook/Playbook';
 export { default as GameFilm } from './GameFilm';
 export { default as Chat } from './Chat';
 export { default as Login } from './Login';

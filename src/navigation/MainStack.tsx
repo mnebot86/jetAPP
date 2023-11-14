@@ -18,6 +18,7 @@ const MainStack = () => {
 
 	return (
 		<Tab.Navigator
+			initialRouteName="Playbook"
 			screenOptions={{
 				headerRight: () => (
 					<Box mr="$4">
