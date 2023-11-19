@@ -3931,6 +3931,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/datetimepicker@npm:^7.6.1":
+  version: 7.6.1
+  resolution: "@react-native-community/datetimepicker@npm:7.6.1"
+  dependencies:
+    invariant: "npm:^2.2.4"
+  checksum: 20d9b35747532e2031b981305f16998e1bd4c651e2c44cd65c4dd5bd4ebe66fd0ed49292bc6883821faf56c1cb3698b16c2b8fb1e9782b8c6f00f3506cf8ee55
+  languageName: node
+  linkType: hard
+
 "@react-native/assets-registry@npm:^0.72.0":
   version: 0.72.0
   resolution: "@react-native/assets-registry@npm:0.72.0"
@@ -10394,6 +10403,7 @@ __metadata:
     "@gluestack-style/react": "npm:^1.0.8"
     "@gluestack-ui/config": "npm:^1.0.3"
     "@gluestack-ui/themed": "npm:^1.0.8"
+    "@react-native-community/datetimepicker": "npm:^7.6.1"
     "@react-navigation/bottom-tabs": "npm:^6.5.11"
     "@react-navigation/native": "npm:^6.1.9"
     "@react-navigation/stack": "npm:^6.3.20"
