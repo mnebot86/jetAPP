@@ -2,6 +2,7 @@ import { Center, FlatList, Text } from '@gluestack-ui/themed';
 import { GameFilmResponse } from 'network/gameFilm';
 import React from 'react';
 import { ListRenderItem } from 'react-native';
+import { formattedDate } from 'utils/dateTime';
 
 interface GameFilmListProps {
 	gameFilms: GameFilmResponse[] | [];
@@ -9,17 +10,10 @@ interface GameFilmListProps {
 
 const GameFilmList: React.FC<GameFilmListProps> = ({ gameFilms }) => {
 	const renderItem: ListRenderItem<GameFilmResponse> = ({ item }) => {
-		const formattedDate = new Date(item.date).toLocaleString('en-US', {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-			timeZone: 'UTC',
-		});
-
 		return (
 			<Center p="$8" borderBottomWidth={2} borderBottomColor="lightgray">
 				<Text>{item.team}</Text>
-				<Text>{formattedDate}</Text>
+				<Text>{formattedDate(item.date)}</Text>
 			</Center>
 		);
 	};
