@@ -1,4 +1,4 @@
-import { Box, FlatList } from '@gluestack-ui/themed';
+import { Box, FlatList, Text } from '@gluestack-ui/themed';
 import React from 'react';
 import { PlayerResponse } from 'utils/interface';
 
@@ -9,6 +9,11 @@ const PlayersList = ({ players }: { players: PlayerResponse[] }) => {
 		<Box flex={1}>
 			<FlatList
 				data={players}
+				ListEmptyComponent={
+					<Text textAlign="center" mt="$6">
+						No Players Listed
+					</Text>
+				}
 				renderItem={({ item }) => <PlayerCard {...(item as PlayerResponse)} />}
 				keyExtractor={(item: any) => item._id}
 			/>

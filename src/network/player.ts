@@ -36,3 +36,16 @@ export const getPlayers = async () => {
 		return res.data as PlayerResponse[];
 	});
 };
+
+export const getPlayer = async (playerId: string) => {
+	return apiRequest(async () => {
+		const config = {
+			method: 'get',
+			url: `players/${playerId}`,
+		};
+
+		const res = await server(config);
+
+		return res.data as PlayerResponse;
+	});
+};

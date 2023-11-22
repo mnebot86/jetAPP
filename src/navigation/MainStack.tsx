@@ -2,8 +2,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { Box } from '@gluestack-ui/themed';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
+import RosterStack from 'navigation/RosterStack';
 import React, { useCallback } from 'react';
-import { Chat, GameFilm, Playbook, Roster, Settings } from 'screens';
+import { Chat, GameFilm, Playbook, Settings } from 'screens';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,10 +33,12 @@ const MainStack = () => {
 				),
 			}}>
 			<Tab.Screen
-				name="Roster"
-				component={Roster}
+				name="RosterStack"
+				component={RosterStack}
 				options={{
+					title: 'Roster',
 					tabBarIcon: () => <Ionicons name="people" size={24} color="black" />,
+					headerShown: false,
 				}}
 			/>
 

@@ -36,7 +36,13 @@ const Roster = () => {
 
 	useEffect(() => {
 		socket.on('new_player', newPlayer => {
-			setPlayers(prev => [...prev, newPlayer]);
+			setPlayers(prevPlayers => {
+				const updatedPlayers = [...prevPlayers, newPlayer];
+
+				updatedPlayers.sort((a, b) => a.lastName.localeCompare(b.lastName));
+
+				return updatedPlayers;
+			});
 		});
 
 		return () => {
@@ -48,11 +54,7 @@ const Roster = () => {
 		<Box flex={1}>
 			<ControlsHeader toggle={toggleModal} />
 
-			{!players.length ? (
-				<Text textAlign="center">Add Players</Text>
-			) : (
-				<PlayersList players={players} />
-			)}
+			<PlayersList players={players} />
 
 			<AddPlayerModal isOpen={isModalOpen} toggle={toggleModal} />
 		</Box>
