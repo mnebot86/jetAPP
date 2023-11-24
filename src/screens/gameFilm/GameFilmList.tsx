@@ -8,12 +8,12 @@ interface GameFilmListProps {
 	gameFilms: GameFilmResponse[] | [];
 }
 
-const GameFilmList: React.FC<GameFilmListProps> = ({ gameFilms }) => {
+const GameFilmList: React.FC<GameFilmListProps> = ({ gameFilms }) => {	
 	const renderItem: ListRenderItem<GameFilmResponse> = ({ item }) => {
 		return (
 			<Center p="$8" borderBottomWidth={2} borderBottomColor="lightgray">
 				<Text>{item.team}</Text>
-				<Text>{formattedDate(item.date)}</Text>
+				<Text>{formattedDate(item.date, false)}</Text>
 			</Center>
 		);
 	};

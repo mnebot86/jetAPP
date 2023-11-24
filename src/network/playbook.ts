@@ -1,4 +1,5 @@
 import { apiRequest, server } from './apiConfig';
+import { FormationResponse } from './formation';
 
 interface PlaybookData {
 	name: string;
@@ -6,7 +7,7 @@ interface PlaybookData {
 
 export interface PlaybookResponse {
 	name: string;
-	formations: [] | string[];
+	formations: FormationResponse[] | string[];
 	group: string;
 	_id: string;
 	createdAt: string;
@@ -38,5 +39,18 @@ export const getPlaybooks = async () => {
 		const res = await server(config);
 
 		return res.data as PlaybookResponse[];
+	});
+};
+
+export const getPlaybook = async (playbookId: string) => {
+	return apiRequest(async () => {
+		const config = {
+			method: 'get',
+			url: `playbooks/${playbookId}`,
+		};
+
+		const res = await server(config);
+
+		return res.data as PlaybookResponse;
 	});
 };
