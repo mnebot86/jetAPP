@@ -41,3 +41,18 @@ export const getGameFilms = async () => {
 		return res.data as GameFilmResponse;
 	});
 };
+
+export const uploadGameFilms = async (formData: FormData, id: string) => {
+	return apiRequest(async () => {
+		const config = {
+			method: 'post',
+			url: `game-films/${id}/videos`,
+			headers: { 'Content-Type': 'multipart/form-data' },
+			data: formData,
+		};
+
+		const res = await server(config);
+
+		return res.data as string[];
+	});
+};

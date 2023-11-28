@@ -1,20 +1,33 @@
-import { Center, FlatList, Text } from '@gluestack-ui/themed';
+import { Center, Text } from '@gluestack-ui/themed';
+import { useNavigation } from '@react-navigation/native';
 import { GameFilmResponse } from 'network/gameFilm';
 import React from 'react';
-import { ListRenderItem } from 'react-native';
+import { ListRenderItem, FlatList, TouchableOpacity } from 'react-native';
 import { formattedDate } from 'utils/dateTime';
 
 interface GameFilmListProps {
 	gameFilms: GameFilmResponse[] | [];
 }
 
-const GameFilmList: React.FC<GameFilmListProps> = ({ gameFilms }) => {	
+type Navigation = any;
+
+const GameFilmList: React.FC<GameFilmListProps> = ({ gameFilms }) => {
+	const navigation: Navigation = useNavigation();
+
 	const renderItem: ListRenderItem<GameFilmResponse> = ({ item }) => {
 		return (
-			<Center p="$8" borderBottomWidth={2} borderBottomColor="lightgray">
-				<Text>{item.team}</Text>
-				<Text>{formattedDate(item.date, false)}</Text>
-			</Center>
+			<TouchableOpacity
+				onPress={() =>
+					navigation.navigate('GameFilmDetails', {
+						id: item._id,
+						team: item.team,
+					})
+				}>
+				<Center p="$8" borderBottomWidth={2} borderBottomColor="lightgray">
+					<Text>{item.team}</Text>
+					<Text>{formattedDate(item.date, false)}</Text>
+				</Center>
+			</TouchableOpacity>
 		);
 	};
 
@@ -27,7 +40,6 @@ const GameFilmList: React.FC<GameFilmListProps> = ({ gameFilms }) => {
 	}
 
 	return (
-		// @ts-ignore
 		<FlatList<GameFilmResponse>
 			data={gameFilms}
 			renderItem={renderItem}
