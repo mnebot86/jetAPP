@@ -4114,6 +4114,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/slider@npm:^4.4.3":
+  version: 4.4.3
+  resolution: "@react-native-community/slider@npm:4.4.3"
+  checksum: b65c45e8ffc49362cb2c87df35d07b5ca936f6d04c8b07ba139a34e9edd09dd73e25aa6639ff1962a3f25855252ab34ec0b559bb4e5709754fb8e7cd5e4fff36
+  languageName: node
+  linkType: hard
+
 "@react-native/assets-registry@npm:^0.72.0":
   version: 0.72.0
   resolution: "@react-native/assets-registry@npm:0.72.0"
@@ -4149,7 +4156,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/normalize-color@npm:^2.0.0":
+"@react-native/normalize-color@npm:*, @react-native/normalize-color@npm:^2.0.0":
   version: 2.1.0
   resolution: "@react-native/normalize-color@npm:2.1.0"
   checksum: 95814a1e2aac9c00dfc2c65f9e2caec07f70d3dba903b5640f5cf24605bf39863e572f2a5138a85d1c514fb3c33f6931595e0a9f738a58b5c220ee74f2bec13b
@@ -5340,6 +5347,26 @@ __metadata:
   dependencies:
     "@types/react": "npm:^15"
   checksum: abc76cd857b6eb4bcf739340828f8beaf5e139c5368851e3040d8041526438064ca075dd3be73b06651cfb44411c940e51e20364a3328a7aac4b3d02feec5470
+  languageName: node
+  linkType: hard
+
+"@types/react-native-video@npm:^5":
+  version: 5.0.18
+  resolution: "@types/react-native-video@npm:5.0.18"
+  dependencies:
+    "@types/react": "npm:*"
+    "@types/react-native": "npm:*"
+  checksum: eef1f4cb106a109ceec9940e828b07753a1ba9415d558011b525182321ffd094f0de5b95284578501081fab421cfb71aaaa214ee348fe6cc678c41f5dc6603ad
+  languageName: node
+  linkType: hard
+
+"@types/react-native@npm:*":
+  version: 0.72.7
+  resolution: "@types/react-native@npm:0.72.7"
+  dependencies:
+    "@react-native/virtualized-lists": "npm:^0.72.4"
+    "@types/react": "npm:*"
+  checksum: 02c83d0ce17869709aaeaa8f4870df03087e360e2a87f5bd8be10b165fc5c02e5b32954f62847bb8876f294b78f97300e51359c6ebe50a253ccb4e5c14c74c62
   languageName: node
   linkType: hard
 
@@ -8251,6 +8278,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"deprecated-react-native-prop-types@npm:^2.2.0":
+  version: 2.3.0
+  resolution: "deprecated-react-native-prop-types@npm:2.3.0"
+  dependencies:
+    "@react-native/normalize-color": "npm:*"
+    invariant: "npm:*"
+    prop-types: "npm:*"
+  checksum: a4bf78dde109cd1a706206fa6e06f7c44e70bc327b990f0f7f936d5d0b8a2372bc78e09979fb2e84bbc5233774aca4165b3ecd17a74765ccc11cead4827380ca
+  languageName: node
+  linkType: hard
+
 "destroy@npm:1.2.0":
   version: 1.2.0
   resolution: "destroy@npm:1.2.0"
@@ -8470,6 +8508,13 @@ __metadata:
   version: 1.4.564
   resolution: "electron-to-chromium@npm:1.4.564"
   checksum: 02c9df93b80564dfc7c2dc708bbb5aa0e58689a22dbc19e7a8f2dcb19225d7a80237aa0489d89585fcd0612559e681b35b7f49235ccf9e8bccce3f7a2b406990
+  languageName: node
+  linkType: hard
+
+"eme-encryption-scheme-polyfill@npm:^2.0.1":
+  version: 2.1.1
+  resolution: "eme-encryption-scheme-polyfill@npm:2.1.1"
+  checksum: 707e0d283ec922f4b648e56a9d5cddcc7b1d176712b1bbb735d0f9fdf1335885b58d96e6297132482f59213226d34027f7ce4ed4048d79d46dce3b6b8a05022a
   languageName: node
   linkType: hard
 
@@ -9239,6 +9284,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-av@npm:13.6.0":
+  version: 13.6.0
+  resolution: "expo-av@npm:13.6.0"
+  peerDependencies:
+    expo: "*"
+  checksum: e775d9c3f38d44dc46edbecb4a11996cb683448ab3fe5ecb7671118dd982ed607cc8c1bd9e399c76ffe2fff35760fd6706f8f7f0fc9a513d6f7f8bb785c693d9
+  languageName: node
+  linkType: hard
+
 "expo-camera@npm:13.6.0":
   version: 13.6.0
   resolution: "expo-camera@npm:13.6.0"
@@ -9399,6 +9453,19 @@ __metadata:
   version: 1.7.1
   resolution: "expo-status-bar@npm:1.7.1"
   checksum: 8d4003a183f1f2b82110108fa3a4fb0c3e4aacb653ba9d548c9948293018d96f3ff15d748f6c030afe0b74ed1855b46fe68cc59b3f71737708b6f2ed5db1fb21
+  languageName: node
+  linkType: hard
+
+"expo-video-player@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "expo-video-player@npm:2.2.0"
+  dependencies:
+    tslib: "npm:^2.4.0"
+  peerDependencies:
+    "@react-native-community/slider": ">=4.0.0"
+    expo: ">=38.0.0"
+    expo-av: ">=5.0.2"
+  checksum: baa1becc92a3b976d09da7b6e8572f488f2559a4891e5133742f5a4ceab41d7c73a5b2b605b0c018f13a94aba3848f00bee5e908f7e23d7fb1570a94eb996df1
   languageName: node
   linkType: hard
 
@@ -11976,6 +12043,7 @@ __metadata:
     "@gluestack-ui/config": "npm:^1.0.3"
     "@gluestack-ui/themed": "npm:^1.0.8"
     "@react-native-community/datetimepicker": "npm:^7.6.1"
+    "@react-native-community/slider": "npm:^4.4.3"
     "@react-navigation/bottom-tabs": "npm:^6.5.11"
     "@react-navigation/native": "npm:^6.1.9"
     "@react-navigation/stack": "npm:^6.3.20"
@@ -11987,6 +12055,7 @@ __metadata:
     "@types/react": "npm:^18.2.31"
     "@types/react-addons-test-utils": "npm:^15"
     "@types/react-native": "npm:^0.72.5"
+    "@types/react-native-video": "npm:^5"
     "@types/react-test-renderer": "npm:^18.0.5"
     axios: "npm:^1.5.1"
     babel-jest: "npm:^29.7.0"
@@ -11994,6 +12063,7 @@ __metadata:
     eslint: "npm:^8.52.0"
     eslint-config-universe: "npm:^12.0.0"
     expo: "npm:^49.0.0"
+    expo-av: "npm:13.6.0"
     expo-camera: "npm:13.6.0"
     expo-constants: "npm:14.4.2"
     expo-device: "npm:5.6.0"
@@ -12001,6 +12071,7 @@ __metadata:
     expo-image-picker: "npm:14.5.0"
     expo-localization: "npm:14.5.0"
     expo-status-bar: "npm:~1.7.1"
+    expo-video-player: "npm:^2.2.0"
     jest: "npm:^29.7.0"
     jest-coverage-badges: "npm:^1.1.2"
     jest-expo: "npm:^49.0.0"
@@ -12017,6 +12088,7 @@ __metadata:
     react-native-testing-library: "npm:^6.0.0"
     react-native-typescript-transformer: "npm:^1.2.13"
     react-native-uuid: "npm:^2.0.1"
+    react-native-video: "npm:^5.2.1"
     react-redux: "npm:^8.1.3"
     react-test-renderer: "npm:^18.2.0"
     socket.io-client: "npm:^4.7.2"
@@ -12310,6 +12382,13 @@ __metadata:
     object.assign: "npm:^4.1.4"
     object.values: "npm:^1.1.6"
   checksum: a32679e9cb55469cb6d8bbc863f7d631b2c98b7fc7bf172629261751a6e7bc8da6ae374ddb74d5fbd8b06cf0eb4572287b259813d92b36e384024ed35e4c13e1
+  languageName: node
+  linkType: hard
+
+"keymirror@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "keymirror@npm:0.1.1"
+  checksum: 5a5196cc7cff6ec844b4f24d73bee65c3023e107a8c423ccc87af61925f953df1bfe3b467deb95644a28240ed8adf5fdac6c5dc45ad0b5ca4feab8c170be9e22
   languageName: node
   linkType: hard
 
@@ -15144,6 +15223,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-video@npm:^5.2.1":
+  version: 5.2.1
+  resolution: "react-native-video@npm:5.2.1"
+  dependencies:
+    deprecated-react-native-prop-types: "npm:^2.2.0"
+    keymirror: "npm:^0.1.1"
+    prop-types: "npm:^15.7.2"
+    shaka-player: "npm:^2.5.9"
+  checksum: 20b7356ba91adb20cb9f22c2660f7663798b7d38bc1fb663b07959db858fd2423a1015d0ca04fbfaa79546231cfe7d54f60ca4871c12828b3f023e81fea21842
+  languageName: node
+  linkType: hard
+
 "react-native@npm:0.72.6":
   version: 0.72.6
   resolution: "react-native@npm:0.72.6"
@@ -16108,6 +16199,15 @@ __metadata:
   version: 1.2.0
   resolution: "setprototypeof@npm:1.2.0"
   checksum: 68733173026766fa0d9ecaeb07f0483f4c2dc70ca376b3b7c40b7cda909f94b0918f6c5ad5ce27a9160bdfb475efaa9d5e705a11d8eaae18f9835d20976028bc
+  languageName: node
+  linkType: hard
+
+"shaka-player@npm:^2.5.9":
+  version: 2.5.23
+  resolution: "shaka-player@npm:2.5.23"
+  dependencies:
+    eme-encryption-scheme-polyfill: "npm:^2.0.1"
+  checksum: 00c3f27aae6607011e22b25ab201af23510a8c3b6ba99ba391779609bab4d3b29e3cc759b5366e1fd1859b1088b7c98927dcf6aea0c69837015db3fc2db9f982
   languageName: node
   linkType: hard
 

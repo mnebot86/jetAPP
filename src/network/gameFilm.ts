@@ -6,7 +6,7 @@ interface GameFilmData {
 
 export interface GameFilmResponse {
 	team: string;
-	video: string[] | [];
+	videos: string[] | [];
 	date: string;
 	group: string;
 	_id: string;
@@ -34,6 +34,19 @@ export const getGameFilms = async () => {
 		const config = {
 			method: 'get',
 			url: 'game-films',
+		};
+
+		const res = await server(config);
+
+		return res.data as GameFilmResponse[];
+	});
+};
+
+export const getGameFilm = async (id: string) => {
+	return apiRequest(async () => {
+		const config = {
+			method: 'get',
+			url: `game-films/${id}`,
 		};
 
 		const res = await server(config);
