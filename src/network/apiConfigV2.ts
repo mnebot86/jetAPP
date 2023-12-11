@@ -22,25 +22,3 @@ export const server = axios.create({
 		'Content-Type': 'application/json',
 	},
 });
-
-export const handleApiError = (error: AxiosError) => {
-	if (error.response) {
-		return error.response.data;
-	} else if (error.request) {
-		return 'No Response Received';
-	} else {
-		return error.message;
-	}
-};
-
-export const apiRequest = async <T>(request: () => Promise<T>) => {
-	try {
-		return await request();
-	} catch (error) {
-		if (error instanceof AxiosError) {
-			return handleApiError(error);
-		} else {
-			throw error;
-		}
-	}
-};

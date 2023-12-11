@@ -1,32 +1,52 @@
-import { apiRequest, server } from './apiConfig';
+import { server } from './apiConfigV2';
 
-export interface FormationResponse {
+export type PlayData = {
+	_id: string;
+	name: string;
+	description: string;
+	formation: string[];
+	image: {
+		cloudinaryId: string;
+		url: string;
+	};
+	createdAt: string;
+	updatedAt: string;
+};
+
+export type FormationResponse = {
 	name: string;
 	image: {
 		url: string;
 		cloudinaryId: string;
 	};
-	plays: string[];
+	plays: PlayData[];
 	playbook: string;
 	_id: string;
 	createdAt: string;
 	updatedAt: string;
 	error?: string;
-}
+};
 
-interface FormationData {
+type FormationData = {
 	name: string;
-}
-export const createFormation = async (data: FormationData, id: string) => {
-	return apiRequest(async () => {
-		const config = {
-			method: 'post',
-			url: `playbooks/${id}/formations`,
-			data,
-		};
+};
 
-		const res = await server(config);
-
-		return res.data as FormationResponse;
+export const createFormation = async (
+	data: FormationData,
+	id: string
+): Promise<FormationResponse> => {
+	const response = await server.post(`playbooks/${id}/formations`, data, {
+		headers: { 'Content-Type': 'multipart/form-data' },
 	});
+
+	return response.data;
+};
+
+export const getFormation = async (
+	playbookId: string,
+	formationId: string
+): Promise<FormationResponse> => {
+	const response = await server.get(`playbooks/${playbookId}/formations/${formationId}`);
+
+	return response.data;
 };

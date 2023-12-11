@@ -1,13 +1,19 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { Playbook, PlaybookDetails } from 'screens';
+import { FormationDetails, Playbook, PlaybookDetails, PlayDetails } from 'screens';
 
 const Stack = createStackNavigator();
 
-interface PlaybookDetailsParams {
+type Params = {
 	id: string;
 	name: string;
-}
+};
+
+type PlayParams = {
+	name: string;
+	image: string;
+	description: string;
+};
 
 const PlaybookStack = () => {
 	return (
@@ -18,7 +24,23 @@ const PlaybookStack = () => {
 				name="PlaybookDetails"
 				component={PlaybookDetails}
 				options={({ route }) => ({
-					title: (route.params as PlaybookDetailsParams)?.name,
+					title: (route.params as Params)?.name,
+				})}
+			/>
+
+			<Stack.Screen
+				name="FormationDetails"
+				component={FormationDetails}
+				options={({ route }) => ({
+					title: (route.params as Params)?.name,
+				})}
+			/>
+
+			<Stack.Screen
+				name="PlayDetails"
+				component={PlayDetails}
+				options={({ route }) => ({
+					title: (route.params as PlayParams)?.name,
 				})}
 			/>
 		</Stack.Navigator>

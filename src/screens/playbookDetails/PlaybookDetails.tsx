@@ -1,26 +1,41 @@
 import { Box, Spinner, Text, Center } from '@gluestack-ui/themed';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import { FormationResponse, createFormation } from 'network/formation';
 import { PlaybookResponse, getPlaybook } from 'network/playbook';
 import { socket } from 'network/socket';
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native';
 
 import AddFormationModal from './AddFormationModal';
 import Header from './Header';
 
+type Navigation = any;
+
 const PlaybookDetails = () => {
 	const router = useRoute();
+	const navigation: Navigation = useNavigation();
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [formations, setFormation] = useState<FormationResponse[] | string[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
+	const playbookId = (router.params as { id: string })?.id;
+
 	const renderItem = ({ item }: { item: FormationResponse }) => {
+		const handleNavigation = () => {
+			navigation.navigate('FormationDetails', {
+				formationId: item._id,
+				name: item.name,
+				playbookId,
+			});
+		};
+
 		return (
-			<Center p="$8" borderBottomWidth={2} borderBottomColor="lightgray">
-				<Text>{item.name}</Text>
-			</Center>
+			<TouchableOpacity onPress={handleNavigation}>
+				<Center p="$8" borderBottomWidth={2} borderBottomColor="lightgray">
+					<Text>{item.name}</Text>
+				</Center>
+			</TouchableOpacity>
 		);
 	};
 
@@ -30,9 +45,9 @@ const PlaybookDetails = () => {
 
 	const handleSubmit = useCallback(
 		async (name: string) => {
-			const data = {
-				name,
-			};
+			setIsLoading(true);
+
+			const data = { name };
 
 			const playbookId = (router.params as { id: string })?.id;
 
@@ -44,6 +59,8 @@ const PlaybookDetails = () => {
 				}
 			} catch (error) {
 				throw error;
+			} finally {
+				setIsLoading(false);
 			}
 		},
 		[router]
