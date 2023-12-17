@@ -17,8 +17,6 @@ const PlayerCard = ({ firstName, lastName, avatar, jerseyNumber, _id }: PlayerRe
 				})
 			}>
 			<HStack
-				borderBottomColor="#00000040"
-				borderBottomWidth={1}
 				paddingHorizontal={16}
 				paddingVertical={20}
 				alignItems="center"

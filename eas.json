@@ -4,7 +4,6 @@
   },
   "build": {
     "development-simulator": {
-      "channel": "development-simulator",
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
@@ -12,12 +11,10 @@
       }
     },
     "development": {
-      "channel": "development",
       "developmentClient": true,
       "distribution": "internal"
     },
     "preview": {
-      "channel": "staging",
       "distribution": "internal"
     },
     "production": {}
