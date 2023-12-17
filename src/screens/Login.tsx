@@ -1,6 +1,5 @@
 import {
 	AlertCircleIcon,
-	Box,
 	Button,
 	ButtonSpinner,
 	ButtonText,
@@ -20,10 +19,11 @@ import {
 	LockIcon,
 	MailIcon,
 	Text,
-	VStack,
+	VStack
 } from '@gluestack-ui/themed';
 import { login } from 'network/auth';
 import React, { useCallback, useState } from 'react';
+import { Platform, KeyboardAvoidingView } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { setUser } from 'store/slices/user';
 import { LoginResponse } from 'utils/interface';
@@ -75,7 +75,9 @@ const Login = () => {
 	}, [email, password, dispatch]);
 
 	return (
-		<Box flex={1} justifyContent="center" p={30}>
+		<KeyboardAvoidingView
+			style={{ flex: 1, justifyContent: 'center', padding: 30 }}
+			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
 			<Heading size="5xl" bold>
 				Login
 			</Heading>
@@ -137,7 +139,7 @@ const Login = () => {
 					</Button>
 				</FormControl>
 			</VStack>
-		</Box>
+		</KeyboardAvoidingView>
 	);
 };
 
