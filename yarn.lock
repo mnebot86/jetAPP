@@ -12151,7 +12151,7 @@ __metadata:
     jest-coverage-badges: "npm:^1.1.2"
     jest-expo: "npm:^49.0.0"
     lodash: "npm:^4.17.21"
-    lucide-react-native: "npm:^0.291.0"
+    lucide-react-native: "npm:^0.298.0"
     prettier: "npm:^3.0.3"
     react: "npm:18.2.0"
     react-addons-test-utils: "npm:^15.6.2"
@@ -12802,15 +12802,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react-native@npm:^0.291.0":
-  version: 0.291.0
-  resolution: "lucide-react-native@npm:0.291.0"
+"lucide-react-native@npm:^0.298.0":
+  version: 0.298.0
+  resolution: "lucide-react-native@npm:0.298.0"
   peerDependencies:
     prop-types: ^15.7.2
     react: ^16.5.1 || ^17.0.0 || ^18.0.0
     react-native: "*"
     react-native-svg: ^12.0.0 || ^13.0.0
-  checksum: 683b276f7a40d1f2fc1292780938b80b31813f99845b6368708e4e4c4882feedf2b6dda8660656603d57ff19113db7c5cb492fdb9f591a6e62621249d9dab300
+  checksum: 3b1d5900ee7fdf117b27288c1967de453e8e93b7bb19707bcaecb676a5d89630772865cbdc254a45d9188046b6226ede75e7fdf8653acacae972505f69e6acca
   languageName: node
   linkType: hard
 

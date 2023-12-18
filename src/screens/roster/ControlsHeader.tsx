@@ -1,5 +1,5 @@
-import { HStack, Button, ButtonIcon } from '@gluestack-ui/themed';
-import { UserPlus } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { HStack } from '@gluestack-ui/themed';
 import React from 'react';
 
 interface ControlsHeaderProps {
@@ -9,14 +9,7 @@ interface ControlsHeaderProps {
 const ControlsHeader = ({ toggle }: ControlsHeaderProps) => {
 	return (
 		<HStack p={8} justifyContent="space-between">
-			<Button
-				borderRadius="$full"
-				paddingHorizontal="$2.5"
-				size="sm"
-				onPress={toggle}
-				bg="black">
-				<ButtonIcon as={UserPlus} />
-			</Button>
+			<Ionicons name="add-circle" size={30} color="black" onPress={toggle} />
 		</HStack>
 	);
 };

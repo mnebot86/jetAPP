@@ -1,4 +1,4 @@
-import { Box, Text } from '@gluestack-ui/themed';
+import { Box, Spinner } from '@gluestack-ui/themed';
 import { getPlayers } from 'network/player';
 import { socket } from 'network/socket';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -51,13 +51,19 @@ const Roster = () => {
 	}, []);
 
 	return (
-		<Box flex={1}>
-			<ControlsHeader toggle={toggleModal} />
+		<>
+			{isLoading ? (
+				<Spinner flex={1} size="large" />
+			) : (
+				<Box flex={1}>
+					<ControlsHeader toggle={toggleModal} />
 
-			<PlayersList players={players} />
+					<PlayersList players={players} />
 
-			<AddPlayerModal isOpen={isModalOpen} toggle={toggleModal} />
-		</Box>
+					<AddPlayerModal isOpen={isModalOpen} toggle={toggleModal} />
+				</Box>
+			)}
+		</>
 	);
 };
 
