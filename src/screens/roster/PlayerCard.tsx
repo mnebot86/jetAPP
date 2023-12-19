@@ -34,6 +34,7 @@ const PlayerCard = ({ firstName, lastName, avatar, jerseyNumber, _id }: PlayerRe
 							source={{ uri: avatar?.url }}
 							borderWidth={1}
 							borderColor="$borderLight600"
+							alt="Player Avatar"
 						/>
 					</Avatar>
 				) : null}

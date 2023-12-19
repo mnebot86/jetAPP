@@ -10,7 +10,6 @@ import {
 	Icon,
 	CloseIcon,
 	Button,
-	ButtonIcon,
 	ButtonGroup,
 	ButtonText,
 	FormControl,
@@ -28,7 +27,7 @@ import {
 import { AvatarUploadButton, Cam } from 'components';
 import Preview from 'components/Camera/Preview';
 import { PlaceHolder } from 'images/placeholders';
-import { AlertCircleIcon, Camera } from 'lucide-react-native';
+import { AlertCircleIcon  } from 'lucide-react-native';
 import { deleteAvatar } from 'network/avatar';
 import { createPlayer } from 'network/player';
 import React, { useCallback, useState, useMemo } from 'react';
@@ -159,7 +158,6 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 	return (
 		<Modal isOpen={isOpen} onClose={onCancel} avoidKeyboard>
 			<ModalBackdrop />
-
 			<ModalContent>
 				<ModalHeader>
 					<Heading size="lg">Add New Player</Heading>
@@ -248,7 +246,7 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 							/>
 
 							<Button onPress={toggleCameraOpen}>
-								<ButtonIcon as={Camera} />
+								<ButtonText>Cam</ButtonText>
 							</Button>
 						</ButtonGroup>
 
