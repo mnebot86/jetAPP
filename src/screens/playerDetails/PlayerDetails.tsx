@@ -1,4 +1,14 @@
-import { Box, Image, Text, HStack, Heading, ScrollView, Spinner } from '@gluestack-ui/themed';
+import {
+	Box,
+	Image,
+	Text,
+	HStack,
+	VStack,
+	Heading,
+	ScrollView,
+	Spinner,
+	Divider,
+} from '@gluestack-ui/themed';
 import { useRoute } from '@react-navigation/native';
 import { getPlayer } from 'network/player';
 import React, { useEffect, useState } from 'react';
@@ -49,35 +59,62 @@ const PlayerDetails = () => {
 					) : null}
 
 					<Box paddingHorizontal={20} pt="$4">
-						<HStack w="$full" justifyContent="space-between" mb="2%">
+						<HStack w="$full" justifyContent="space-between" mb="$4">
 							<Heading>{`${player?.firstName} ${player?.lastName}`}</Heading>
-							<Text bold># {player?.jerseyNumber}23</Text>
+							<Text bold># {player?.jerseyNumber}</Text>
 						</HStack>
 
-						<Text mb="2%">Absents: {player?.totalAbsent}</Text>
+						<VStack>
+							<Text sub mb="$2">
+								Absents:
+							</Text>
+							<Text>{player?.totalAbsent}</Text>
+						</VStack>
 
-						<HStack mb="2%">
-							<Text>Positions: </Text>
+						<Divider marginVertical={16} />
+
+						<VStack>
+							<Text sub mb="$2">
+								Positions:
+							</Text>
+
 							{player?.positions.map((pos, idx) => (
 								<Text key={`position-${idx}`}>{pos}</Text>
 							))}
-						</HStack>
+						</VStack>
 
-						<HStack mb="2%">
-							<Text>Medical: </Text>
+						<Divider marginVertical={16} />
+
+						<VStack>
+							<Text sub mb="$2">
+								Medical:
+							</Text>
+
 							{player?.medicalConditions.map((med, idx) => (
 								<Text key={`med-${idx}`}>{med}</Text>
 							))}
-						</HStack>
+						</VStack>
 
-						<HStack mb="2%">
-							<Text>Allergies: </Text>
+						<Divider marginVertical={16} />
+
+						<VStack>
+							<Text sub mb="$2">
+								Allergies:{' '}
+							</Text>
+
 							{player?.positions.map((pos, idx) => (
 								<Text key={`allergies-${idx}`}>{pos}</Text>
 							))}
-						</HStack>
+						</VStack>
 
-						<Text>Striper: {player?.isStriper ? 'Yes' : 'No'}</Text>
+						<Divider marginVertical={16} />
+
+						<VStack>
+							<Text sub mb="$2">
+								Striper:
+							</Text>
+							<Text>{player?.isStriper ? 'Yes' : 'No'}</Text>
+						</VStack>
 					</Box>
 				</ScrollView>
 			)}

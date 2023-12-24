@@ -14,6 +14,7 @@ const PlayerCard = ({ firstName, lastName, avatar, jerseyNumber, _id }: PlayerRe
 			onPress={() =>
 				navigation.navigate('PlayerDetails', {
 					_id,
+					name: lastName,
 				})
 			}>
 			<HStack
