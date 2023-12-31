@@ -2,7 +2,7 @@ import { Box } from '@gluestack-ui/themed';
 import { useRoute } from '@react-navigation/native';
 import { getGameFilm, GameFilmResponse } from 'network/gameFilm';
 import { socket } from 'network/socket';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { ActivityIndicator } from 'react-native';
 
 import AddGameFilmModal from './AddGameFilmModal';
@@ -55,6 +55,8 @@ const GameFilmDetails: React.FC = () => {
 		};
 	}, []);
 
+	const hasVideoSources = useMemo(() => videoSources.length > 0, [videoSources]);
+
 	return (
 		<>
 			{isLoading ? (
@@ -62,19 +64,18 @@ const GameFilmDetails: React.FC = () => {
 			) : (
 				<Box flex={1}>
 					<Header toggle={toggleIsModalOpen} />
-
-					<VideoPlayer
-						videoSources={videoSources}
-						currentVideoIndex={currentVideoIndex}
-						setCurrentVideoIndex={setCurrentVideoIndex}
-					/>
-
+					{hasVideoSources ? (
+						<VideoPlayer
+							videoSources={videoSources}
+							currentVideoIndex={currentVideoIndex}
+							setCurrentVideoIndex={setCurrentVideoIndex}
+						/>
+					) : null}
 					<VideoList
 						videoSources={videoSources}
 						currentVideoIndex={currentVideoIndex}
 						setCurrentVideoIndex={setCurrentVideoIndex}
 					/>
-
 					<AddGameFilmModal
 						isOpen={isModalOpen}
 						toggle={toggleIsModalOpen}

@@ -1,4 +1,4 @@
-import { Text, Box } from '@gluestack-ui/themed';
+import { Text, Box, Center } from '@gluestack-ui/themed';
 import React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 
@@ -27,6 +27,11 @@ const VideoList = ({ videoSources, currentVideoIndex, setCurrentVideoIndex }: Vi
 		<FlatList
 			data={videoSources}
 			renderItem={renderItem}
+			ListEmptyComponent={
+				<Center>
+					<Text textAlign="center">Add Videos</Text>
+				</Center>
+			}
 			keyExtractor={keyExtractor}
 			style={{ flex: 1 }}
 		/>

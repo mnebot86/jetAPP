@@ -31,18 +31,15 @@ const GameFilmList: React.FC<GameFilmListProps> = ({ gameFilms }) => {
 		);
 	};
 
-	if (!gameFilms.length) {
-		return (
-			<Center>
-				<Text>No GameFilms</Text>
-			</Center>
-		);
-	}
-
 	return (
 		<FlatList<GameFilmResponse>
 			data={gameFilms}
 			renderItem={renderItem}
+			ListEmptyComponent={
+				<Center>
+					<Text>No GameFilms</Text>
+				</Center>
+			}
 			keyExtractor={(item: GameFilmResponse) => item._id}
 		/>
 	);
