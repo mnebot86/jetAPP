@@ -22,8 +22,10 @@ import {
 	ModalHeader,
 } from '@gluestack-ui/themed';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { DateTimeFormatOptions } from 'intl';
 import { AlertCircleIcon } from 'lucide-react-native';
 import React, { useCallback, useState } from 'react';
+import { Platform } from 'react-native';
 
 interface AddGameFilmModalProps {
 	handleSubmit: (name: string, date: string) => void;
@@ -35,15 +37,32 @@ interface AddGameFilmModalProps {
 const AddGameFilmModal = ({ handleSubmit, error, toggle, isModalOpen }: AddGameFilmModalProps) => {
 	const [name, setName] = useState('');
 	const [date, setDate] = useState<string>(new Date().toISOString());
+	const [showDatePicker, setShowDatePicker] = useState(false);
 
-	const handleDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+	const handleDateChange = useCallback((event: DateTimePickerEvent, selectedDate?: Date) => {
 		if (selectedDate) {
 			const formattedDate = selectedDate.toISOString();
+			setShowDatePicker(false);
 			setDate(formattedDate);
 		}
+	}, []);
+
+	const toggleDatePicker = () => {
+		setShowDatePicker(!showDatePicker);
 	};
 
 	const dateAsDateObject = date ? new Date(date) : new Date();
+
+	const formattedDate = (date: string) => {
+		const formattedDate = new Date(date);
+
+		const options: DateTimeFormatOptions = {
+			month: 'short',
+			day: 'numeric',
+			year: 'numeric',
+		};
+		return formattedDate.toLocaleDateString('en-US', options);
+	};
 
 	const onSubmit = useCallback(() => {
 		handleSubmit(name, date);
@@ -51,6 +70,12 @@ const AddGameFilmModal = ({ handleSubmit, error, toggle, isModalOpen }: AddGameF
 		setName('');
 		setDate('');
 	}, [date, handleSubmit, name]);
+
+	const onCancel = useCallback(() => {
+		setName('');
+		setDate('');
+		toggle();
+	}, [toggle]);
 
 	return (
 		<Modal isOpen={isModalOpen} onClose={toggle}>
@@ -81,8 +106,21 @@ const AddGameFilmModal = ({ handleSubmit, error, toggle, isModalOpen }: AddGameF
 					</FormControl>
 
 					<FormControl isInvalid={!!error} alignItems="center">
-						<DateTimePicker value={dateAsDateObject} onChange={handleDateChange} />
+						{Platform.OS === 'ios' ? (
+							<DateTimePicker value={dateAsDateObject} onChange={handleDateChange} />
+						) : (
+							<Button onPress={toggleDatePicker}>
+								<ButtonText>{formattedDate(date)}</ButtonText>
+							</Button>
+						)}
 
+						{showDatePicker && (
+							<DateTimePicker
+								value={dateAsDateObject}
+								onChange={handleDateChange}
+								mode="date"
+							/>
+						)}
 						<FormControlError>
 							<FormControlErrorIcon as={AlertCircleIcon} />
 							<FormControlErrorText>{error}</FormControlErrorText>
@@ -92,7 +130,7 @@ const AddGameFilmModal = ({ handleSubmit, error, toggle, isModalOpen }: AddGameF
 
 				<ModalFooter>
 					<ButtonGroup>
-						<Button>
+						<Button onPress={onCancel}>
 							<ButtonText>Cancel</ButtonText>
 						</Button>
 

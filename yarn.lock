@@ -5502,6 +5502,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/intl@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@types/intl@npm:1.2.2"
+  checksum: f465c320139c01dfc9ae1382406259fd23f6a455aad31517f61b7fd79bdde493e854d6666c2198ae644d8cf6e147e78831ea810f83a787f65b765bc56834f259
+  languageName: node
+  linkType: hard
+
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.5
   resolution: "@types/istanbul-lib-coverage@npm:2.0.5"
@@ -12497,6 +12504,7 @@ __metadata:
     "@reduxjs/toolkit": "npm:^2.0.1"
     "@testing-library/jest-native": "npm:^5.4.3"
     "@testing-library/react-native": "npm:^12.4.2"
+    "@types/intl": "npm:^1.2.2"
     "@types/jest": "npm:^29.5.11"
     "@types/lodash": "npm:^4.14.202"
     "@types/react": "npm:^18.2.45"

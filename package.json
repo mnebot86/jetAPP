@@ -29,6 +29,7 @@
     "@reduxjs/toolkit": "^2.0.1",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^12.4.2",
+    "@types/intl": "^1.2.2",
     "axios": "^1.6.2",
     "expo": "^49.0.21",
     "expo-av": "~13.4.1",
