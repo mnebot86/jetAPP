@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallbackText, Box, HStack, Text } from '@gluestack-ui/themed';
+import { Box, HStack, Text } from '@gluestack-ui/themed';
 import * as Localization from 'expo-localization';
 import { MessageResponse } from 'network/message';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -74,17 +74,17 @@ const Messages = ({ messages }: MessagesProps) => {
 				alignSelf={isOwner ? 'flex-end' : 'flex-start'}
 				maxWidth="80%">
 				{!isOwner ? (
-					<Avatar bg="$amber600" size="sm" borderRadius="$full" mb="$2">
-						<AvatarFallbackText>{`${item.createdBy.firstName} ${item.createdBy.lastName}`}</AvatarFallbackText>
-					</Avatar>
+					<Text sub>{`${item.createdBy.firstName} ${item.createdBy.lastName[0]}`}</Text>
 				) : null}
 
 				<Box
-					bg="$lightBlue600"
+					bg={!isOwner ? 'lightgray' : '$lightBlue600'}
 					borderRadius={12}
 					paddingHorizontal={12}
 					paddingVertical={6}>
-					<Text lineHeight={24}>{item.message}</Text>
+					<Text lineHeight={24} color={!isOwner ? 'black' : 'white'}>
+						{item.message}
+					</Text>
 				</Box>
 
 				<HStack justifyContent={isOwner ? 'flex-end' : 'flex-start'} mt="$2">

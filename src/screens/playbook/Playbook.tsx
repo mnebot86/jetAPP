@@ -1,4 +1,4 @@
-import { Box, Text, VStack } from '@gluestack-ui/themed';
+import { Box, Text, VStack, Center } from '@gluestack-ui/themed';
 import { useNavigation } from '@react-navigation/native';
 import { PlaybookResponse, createPlaybook, getPlaybooks } from 'network/playbook';
 import { socket } from 'network/socket';
@@ -79,14 +79,9 @@ const Playbook = () => {
 									name: playbook.name,
 								})
 							}>
-							<Box
-								bg="$darkBlue500"
-								padding={20}
-								borderColor="black"
-								borderRadius={6}
-								borderWidth={1}>
-								<Text color="white">{playbook.name}</Text>
-							</Box>
+							<Center p="$8" borderBottomWidth={2} borderBottomColor="lightgray">
+								<Text bold>{playbook.name}</Text>
+							</Center>
 						</TouchableOpacity>
 					);
 				})}

@@ -26,7 +26,7 @@ const FormationPlaysList = ({ plays }: FormationPlaysListProps) => {
 					})
 				}>
 				<Center p="$8" borderBottomWidth={2} borderBottomColor="lightgray">
-					<Text>{item.name}</Text>
+					<Text bold>{item.name}</Text>
 				</Center>
 			</TouchableOpacity>
 		);
