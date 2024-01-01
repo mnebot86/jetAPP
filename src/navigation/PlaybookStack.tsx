@@ -1,5 +1,8 @@
+import { Ionicons } from '@expo/vector-icons';
+import { Box } from '@gluestack-ui/themed';
+import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FormationDetails, Playbook, PlaybookDetails, PlayDetails } from 'screens';
 
 const Stack = createStackNavigator();
@@ -15,9 +18,30 @@ type PlayParams = {
 	description: string;
 };
 
+type Navigation = any;
+
 const PlaybookStack = () => {
+	const navigation: Navigation = useNavigation();
+
+	const navigateToSettings = useCallback(() => {
+		navigation.navigate('Settings');
+	}, [navigation]);
+
 	return (
-		<Stack.Navigator initialRouteName="Playbook">
+		<Stack.Navigator
+			initialRouteName="Playbook"
+			screenOptions={{
+				headerRight: () => (
+					<Box mr="$4">
+						<Ionicons
+							name="settings"
+							size={24}
+							color="black"
+							onPress={navigateToSettings}
+						/>
+					</Box>
+				),
+			}}>
 			<Stack.Screen name="Playbook" component={Playbook} />
 
 			<Stack.Screen
