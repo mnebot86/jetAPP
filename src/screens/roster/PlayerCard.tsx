@@ -18,13 +18,7 @@ const PlayerCard = memo(({ firstName, lastName, avatar, jerseyNumber, _id }: Pla
 				})
 			}>
 			<HStack
-				hardShadow="1"
-				bg="$light50"
-				alignSelf="center"
-				width="90%"
-				borderWidth={1}
 				borderColor="$backgroundLight500"
-				borderRadius={8}
 				paddingHorizontal={16}
 				paddingVertical={20}
 				alignItems="center"

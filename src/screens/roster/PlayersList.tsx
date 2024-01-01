@@ -1,10 +1,10 @@
-import { Box, FlatList, Text, View } from '@gluestack-ui/themed';
+import { Box, FlatList, Text, Divider } from '@gluestack-ui/themed';
 import React from 'react';
 import { PlayerResponse } from 'utils/interface';
 
 import PlayerCard from './PlayerCard';
 
-const Separator = () => <View paddingVertical="$1.5" />;
+const Separator = () => <Divider />;
 
 const PlayersList = ({ players }: { players: PlayerResponse[] }) => {
 	return (
