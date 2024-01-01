@@ -24,8 +24,8 @@ const GameFilmList: React.FC<GameFilmListProps> = ({ gameFilms }) => {
 					})
 				}>
 				<Center p="$8" borderBottomWidth={2} borderBottomColor="lightgray">
-					<Text>{item.team}</Text>
-					<Text>{formattedDate(item.date, false)}</Text>
+					<Text bold>{item.team}</Text>
+					<Text sub>{formattedDate(item.date, false)}</Text>
 				</Center>
 			</TouchableOpacity>
 		);
