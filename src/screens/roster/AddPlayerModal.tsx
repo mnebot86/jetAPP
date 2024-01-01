@@ -1,36 +1,37 @@
 import {
-	Modal,
-	ModalBackdrop,
-	ModalCloseButton,
-	ModalBody,
-	ModalHeader,
-	ModalFooter,
-	ModalContent,
-	Heading,
-	Icon,
-	CloseIcon,
 	Button,
 	ButtonGroup,
+	ButtonIcon,
+	ButtonSpinner,
 	ButtonText,
+	Center,
+	CloseIcon,
 	FormControl,
+	FormControlError,
+	FormControlErrorIcon,
+	FormControlErrorText,
 	FormControlLabel,
 	FormControlLabelText,
+	Heading,
+	Icon,
+	Image,
 	Input,
 	InputField,
-	Image,
-	Center,
-	ButtonSpinner,
-	FormControlErrorIcon,
-	FormControlError,
-	FormControlErrorText,
+	Modal,
+	ModalBackdrop,
+	ModalBody,
+	ModalCloseButton,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
 } from '@gluestack-ui/themed';
 import { AvatarUploadButton, Cam } from 'components';
 import Preview from 'components/Camera/Preview';
 import { PlaceHolder } from 'images/placeholders';
-import { AlertCircleIcon  } from 'lucide-react-native';
+import { AlertCircleIcon, Camera } from 'lucide-react-native';
 import { deleteAvatar } from 'network/avatar';
 import { createPlayer } from 'network/player';
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { AvatarResponse, PlayerResponse } from 'utils/interface';
 
 interface AddPlayerModalProps {
@@ -246,7 +247,7 @@ const AddPlayerModal = ({ isOpen, toggle }: AddPlayerModalProps) => {
 							/>
 
 							<Button onPress={toggleCameraOpen}>
-								<ButtonText>Cam</ButtonText>
+								<ButtonIcon as={Camera} />
 							</Button>
 						</ButtonGroup>
 

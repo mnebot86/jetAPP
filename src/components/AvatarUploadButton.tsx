@@ -1,4 +1,4 @@
-import { Button, ButtonIcon, ButtonText } from '@gluestack-ui/themed';
+import { Button, ButtonIcon } from '@gluestack-ui/themed';
 import * as ImagePicker from 'expo-image-picker';
 import { Image } from 'lucide-react-native';
 import { uploadAvatar } from 'network/avatar';
@@ -75,7 +75,7 @@ const AvatarUploadButton = ({
 
 	return (
 		<Button action="secondary" onPress={pickImage}>
-			<ButtonText>Album</ButtonText>
+			<ButtonIcon as={Image} />
 		</Button>
 	);
 };
