@@ -32,6 +32,14 @@ const Roster = () => {
 		};
 
 		fetchPlayers();
+
+		socket.on('update_player', () => {
+			fetchPlayers();
+		});
+
+		return () => {
+			socket.off('update_player');
+		};
 	}, []);
 
 	useEffect(() => {
