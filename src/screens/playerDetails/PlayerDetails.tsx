@@ -15,7 +15,8 @@ import {
 	VStack,
 } from '@gluestack-ui/themed';
 import { useRoute } from '@react-navigation/native';
-import { ImagePickerButton } from 'components';
+import { ImagePickerButton, Cam } from 'components';
+import Preview from 'components/Camera/Preview';
 import { Camera, Edit } from 'lucide-react-native';
 import { getPlayer, updatePlayer } from 'network/player';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -49,6 +50,8 @@ const PlayerDetails = () => {
 	const [isEditing, setIsEditing] = useState<boolean>(false);
 	const [editPlayer, setEditPlayer] = useState<PlayerEdit>({ ...player });
 	const [image, setImage] = useState<string | null>(null);
+	const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+	const [isCameraOpen, setIsCameraOpen] = useState(false);
 
 	useEffect(() => {
 		const fetchPlayer = async () => {
@@ -69,6 +72,14 @@ const PlayerDetails = () => {
 
 		fetchPlayer();
 	}, [playerId]);
+
+	const togglePreviewOpen = useCallback(() => {
+		setIsPreviewOpen(!isPreviewOpen);
+	}, [isPreviewOpen]);
+
+	const toggleCameraOpen = useCallback(() => {
+		setIsCameraOpen(!isCameraOpen);
+	}, [isCameraOpen]);
 
 	const handleInputChange = (key: string, value: string) => {
 		setEditPlayer({ ...editPlayer, [key]: value });
@@ -103,7 +114,6 @@ const PlayerDetails = () => {
 		try {
 			const updatedPlayer = (await updatePlayer(playerId, formData)) as PlayerResponse;
 
-
 			setPlayer(updatedPlayer);
 			setIsEditing(false);
 		} catch (error) {
@@ -112,7 +122,6 @@ const PlayerDetails = () => {
 			setIsLoading(false);
 		}
 	}, [editPlayer, playerId, image, player]);
-
 
 	return (
 		<>
@@ -147,7 +156,7 @@ const PlayerDetails = () => {
 									<ButtonGroup>
 										<ImagePickerButton setImage={setImage} />
 
-										<Button>
+										<Button onPress={toggleCameraOpen}>
 											<ButtonIcon as={Camera} />
 										</Button>
 									</ButtonGroup>
@@ -298,6 +307,22 @@ const PlayerDetails = () => {
 					</Box>
 				</ScrollView>
 			)}
+
+			{isCameraOpen ? (
+				<Cam
+					onClose={toggleCameraOpen}
+					setProfileImage={setImage}
+					togglePreviewOpen={togglePreviewOpen}
+				/>
+			) : null}
+
+			{isPreviewOpen ? (
+				<Preview
+					profileImage={image}
+					togglePreviewOpen={togglePreviewOpen}
+					toggleCameraOpen={toggleCameraOpen}
+				/>
+			) : null}
 		</>
 	);
 };
