@@ -15,7 +15,8 @@ import {
 	VStack,
 } from '@gluestack-ui/themed';
 import { useRoute } from '@react-navigation/native';
-import { Edit } from 'lucide-react-native';
+import { ImagePickerButton } from 'components';
+import { Camera, Edit } from 'lucide-react-native';
 import { getPlayer, updatePlayer } from 'network/player';
 import React, { useCallback, useEffect, useState } from 'react';
 import { PlayerResponse } from 'utils/interface';
@@ -47,6 +48,7 @@ const PlayerDetails = () => {
 	const [player, setPlayer] = useState<PlayerResponse | null>(null);
 	const [isEditing, setIsEditing] = useState<boolean>(false);
 	const [editPlayer, setEditPlayer] = useState<PlayerEdit>({ ...player });
+	const [image, setImage] = useState<string | null>(null);
 
 	useEffect(() => {
 		const fetchPlayer = async () => {
@@ -75,26 +77,32 @@ const PlayerDetails = () => {
 	const handleOnSubmit = useCallback(async () => {
 		setIsLoading(true);
 
-		const positionsArray = editPlayer?.positions?.toString().split(',');
-		const medicalArray = editPlayer?.medicalConditions?.toString().split(',');
-		const allergiesArray = editPlayer?.allergies?.toString().split(',');
-
 		const editPlayerData = {
 			...editPlayer,
-			totalAbsent: editPlayer.totalAbsent
-				? parseInt(editPlayer.totalAbsent.toString(), 10)
-				: 0,
-			jerseyNumber: editPlayer.jerseyNumber
-				? parseInt(editPlayer.jerseyNumber.toString(), 10)
-				: null,
-			positions: editPlayer.positions ? positionsArray : [],
-			medicalConditions: editPlayer.medicalConditions ? medicalArray : [],
-			allergies: editPlayer.allergies ? allergiesArray : [],
-			isStriper: editPlayer.isStriper,
 		};
 
+		const entries = Object.entries(editPlayerData);
+
+		const formData = new FormData();
+
+		// @ts-ignore
+		entries.forEach(([key, value]) => formData.append(key, value));
+
+		const type = image?.split('.')[1];
+
+		if (image) {
+			formData.append('avatar', {
+				uri: image,
+				name: `${editPlayer.firstName} ${editPlayer.lastName}`,
+				type: `image/${type}`,
+			} as any);
+
+			formData.append('imageId', player?.avatar?.imageId || '');
+		}
+
 		try {
-			const updatedPlayer = (await updatePlayer(playerId, editPlayerData)) as PlayerResponse;
+			const updatedPlayer = (await updatePlayer(playerId, formData)) as PlayerResponse;
+
 
 			setPlayer(updatedPlayer);
 			setIsEditing(false);
@@ -103,7 +111,8 @@ const PlayerDetails = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [editPlayer, playerId]);
+	}, [editPlayer, playerId, image, player]);
+
 
 	return (
 		<>
@@ -120,13 +129,31 @@ const PlayerDetails = () => {
 					</Button>
 
 					{player?.avatar ? (
-						<Image
-							w="$full"
-							source={{ uri: player?.avatar.url }}
-							alt="profile"
-							h={350}
-							role="img"
-						/>
+						<Box>
+							<Image
+								w="$full"
+								source={{ uri: image || player?.avatar.url }}
+								alt="profile"
+								h={350}
+								role="img"
+							/>
+
+							{isEditing ? (
+								<VStack mt="$4" paddingHorizontal={20}>
+									<Text sub mb="$4">
+										Edit Image:
+									</Text>
+
+									<ButtonGroup>
+										<ImagePickerButton setImage={setImage} />
+
+										<Button>
+											<ButtonIcon as={Camera} />
+										</Button>
+									</ButtonGroup>
+								</VStack>
+							) : null}
+						</Box>
 					) : null}
 
 					<Box paddingHorizontal={20} pt="$4">
@@ -175,7 +202,7 @@ const PlayerDetails = () => {
 							<Input variant="underlined" isReadOnly={!isEditing}>
 								<InputField
 									type="text"
-									defaultValue={player?.totalAbsent.toString()}
+									defaultValue={player?.totalAbsent?.toString()}
 									onChangeText={event => handleInputChange('totalAbsent', event)}
 								/>
 							</Input>
@@ -189,7 +216,8 @@ const PlayerDetails = () => {
 							<Input variant="underlined" isReadOnly={!isEditing}>
 								<InputField
 									type="text"
-									defaultValue={player?.positions.map(pos => pos).join('')}
+									defaultValue={player?.positions.map(pos => pos).join(' ')}
+									placeholder={isEditing ? 'Comma separated ex QB, RB, WR' : ''}
 									onChangeText={event => handleInputChange('positions', event)}
 								/>
 							</Input>
@@ -206,6 +234,9 @@ const PlayerDetails = () => {
 									defaultValue={player?.medicalConditions
 										.map(med => med)
 										.join('')}
+									placeholder={
+										isEditing ? 'Comma separated ex Asthma, Migraines' : ''
+									}
 									onChangeText={event =>
 										handleInputChange('medicalConditions', event)
 									}
@@ -224,6 +255,9 @@ const PlayerDetails = () => {
 									defaultValue={player?.allergies
 										.map(allergy => allergy)
 										.join('')}
+									placeholder={
+										isEditing ? 'Comma separated ex Tree nuts, Gluten' : ''
+									}
 									onChangeText={event => handleInputChange('allergies', event)}
 								/>
 							</Input>

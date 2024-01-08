@@ -10,14 +10,6 @@ interface PlayerData {
 	allergies?: string[];
 }
 
-interface PlayerDataEdit {
-	avatar?: AvatarResponse;
-	firstName?: string;
-	lastName?: string;
-	medicalConditions?: string[];
-	allergies?: string[];
-}
-
 export const createPlayer = async (data: PlayerData) => {
 	return apiRequest(async () => {
 		const config = {
@@ -32,12 +24,13 @@ export const createPlayer = async (data: PlayerData) => {
 	});
 };
 
-export const updatePlayer = async (id: string, data: PlayerDataEdit) => {
+export const updatePlayer = async (id: string, formData: FormData) => {
 	return apiRequest(async () => {
 		const config = {
 			method: 'patch',
 			url: `players/${id}`,
-			data,
+			headers: { 'Content-Type': 'multipart/form-data' },
+			data: formData,
 		};
 
 		const res = await server(config);
