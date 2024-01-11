@@ -1,4 +1,4 @@
-import { Box, Text, Image } from '@gluestack-ui/themed';
+import { ScrollView, Text, Image } from '@gluestack-ui/themed';
 import { useRoute } from '@react-navigation/native';
 import React from 'react';
 
@@ -10,7 +10,7 @@ const PlayDetails = () => {
 	const description = (route.params as { description: string })?.description;
 
 	return (
-		<Box>
+		<ScrollView>
 			{image ? (
 				<Image
 					source={image}
@@ -23,10 +23,10 @@ const PlayDetails = () => {
 				/>
 			) : null}
 
-			<Text bold textAlign="center">
+			<Text textAlign="center" px="$8" mt="$8">
 				{description}
 			</Text>
-		</Box>
+		</ScrollView>
 	);
 };
 

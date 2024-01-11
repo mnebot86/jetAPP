@@ -73,6 +73,18 @@ const PlayerDetails = () => {
 		fetchPlayer();
 	}, [playerId]);
 
+	const onCancel = useCallback(async () => {
+		setIsEditing(false);
+
+		setImage(null);
+
+		setEditPlayer({ ...player });
+	}, [player]);
+
+	const toggleIsEditing = useCallback(() => {
+		setIsEditing(!isEditing);
+	}, [isEditing]);
+
 	const togglePreviewOpen = useCallback(() => {
 		setIsPreviewOpen(!isPreviewOpen);
 	}, [isPreviewOpen]);
@@ -129,11 +141,7 @@ const PlayerDetails = () => {
 				<Spinner flex={1} />
 			) : (
 				<ScrollView flex={1}>
-					<Button
-						mb="$4"
-						w="95%"
-						alignSelf="center"
-						onPress={() => setIsEditing(!isEditing)}>
+					<Button mb="$4" w="95%" alignSelf="center" onPress={toggleIsEditing}>
 						<ButtonIcon as={Edit} />
 					</Button>
 
@@ -295,7 +303,7 @@ const PlayerDetails = () => {
 
 						{isEditing ? (
 							<ButtonGroup marginVertical="$8">
-								<Button>
+								<Button onPress={onCancel}>
 									<ButtonText>Cancel</ButtonText>
 								</Button>
 
