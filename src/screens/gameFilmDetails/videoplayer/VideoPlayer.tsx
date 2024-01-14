@@ -1,9 +1,10 @@
 import { Box } from '@gluestack-ui/themed';
 import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
-import React, { useRef, useCallback, useState, useEffect } from 'react';
+import { GameVideo } from 'network/gameFilm';
+import React, { useRef, useCallback, useEffect } from 'react';
 
 interface VideoPlayerProps {
-	videoSources: string[];
+	videoSources: GameVideo[];
 	currentVideoIndex: number;
 	setCurrentVideoIndex: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -19,7 +20,7 @@ const VideoPlayer = ({
 		if (currentVideoIndex < videoSources.length - 1) {
 			const nextVideoSource = videoSources[currentVideoIndex + 1];
 			if (nextVideoSource) {
-				await videoRef.current?.loadAsync({ uri: nextVideoSource }, {}, false);
+				await videoRef.current?.loadAsync({ uri: nextVideoSource.url }, {}, false);
 				await videoRef.current?.playAsync();
 			}
 		}
@@ -38,7 +39,7 @@ const VideoPlayer = ({
 	useEffect(() => {
 		if (videoSources.length > 0) {
 			videoRef.current
-				?.loadAsync({ uri: videoSources[currentVideoIndex] }, {}, false)
+				?.loadAsync({ uri: videoSources[currentVideoIndex].url }, {}, false)
 				.then(() => videoRef.current?.playAsync())
 				.then(preloadNextVideo)
 				.catch(error => {
@@ -51,7 +52,7 @@ const VideoPlayer = ({
 		<Box>
 			<Video
 				style={{ width: '100%', height: 250, backgroundColor: 'black' }}
-				source={{ uri: videoSources[currentVideoIndex] }}
+				source={{ uri: videoSources[currentVideoIndex].url }}
 				useNativeControls
 				resizeMode={ResizeMode.COVER}
 				ref={videoRef}

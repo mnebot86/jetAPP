@@ -4,9 +4,21 @@ interface GameFilmData {
 	team: string;
 }
 
+export interface Comment {
+	comment: string;
+	playerTags: string[];
+	createdBy: string;
+}
+
+export interface GameVideo {
+	_id: string;
+	url: string;
+	comments: Comment[];
+}
+
 export interface GameFilmResponse {
 	team: string;
-	videos: string[] | [];
+	videos: GameVideo[];
 	date: string;
 	group: string;
 	_id: string;

@@ -1,6 +1,6 @@
 import { Box } from '@gluestack-ui/themed';
 import { useRoute } from '@react-navigation/native';
-import { getGameFilm, GameFilmResponse } from 'network/gameFilm';
+import { getGameFilm, GameFilmResponse, GameVideo } from 'network/gameFilm';
 import { socket } from 'network/socket';
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { ActivityIndicator } from 'react-native';
@@ -17,7 +17,7 @@ const GameFilmDetails: React.FC = () => {
 	const team = (router.params as { team: string })?.team;
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [videoSources, setVideoSources] = useState<string[]>([]);
+	const [videoSources, setVideoSources] = useState<GameVideo[]>([]);
 	const [currentVideoIndex, setCurrentVideoIndex] = useState<number>(0);
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -47,7 +47,7 @@ const GameFilmDetails: React.FC = () => {
 
 	useEffect(() => {
 		socket.on('video_upload', newVideoSources => {
-			setVideoSources([newVideoSources]);
+			setVideoSources(newVideoSources);
 		});
 
 		return () => {
@@ -55,7 +55,7 @@ const GameFilmDetails: React.FC = () => {
 		};
 	}, []);
 
-	const hasVideoSources = useMemo(() => videoSources.length > 0, [videoSources]);
+	const hasVideoSources = useMemo(() => videoSources?.length > 0, [videoSources]);
 
 	return (
 		<>
