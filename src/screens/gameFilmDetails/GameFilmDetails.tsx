@@ -57,6 +57,7 @@ const GameFilmDetails: React.FC = () => {
 
 	const hasVideoSources = useMemo(() => videoSources?.length > 0, [videoSources]);
 
+	console.log('hasVideoSources', videoSources);
 	return (
 		<>
 			{isLoading ? (

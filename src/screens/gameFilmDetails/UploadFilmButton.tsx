@@ -18,7 +18,7 @@ const UploadFilmButton = ({ selectedVideos, setSelectedVideos }: UploadFilmButto
 				mediaTypes: ImagerPicker.MediaTypeOptions.Videos,
 				orderedSelection: true,
 				videoQuality: 1,
-				selectionLimit: 20,
+				selectionLimit: 10,
 			});
 
 			if (!result.canceled) {
