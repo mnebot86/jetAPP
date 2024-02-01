@@ -1,11 +1,14 @@
-import { Box } from '@gluestack-ui/themed';
+import { Box, Icon } from '@gluestack-ui/themed';
 import { useRoute } from '@react-navigation/native';
-import { getGameFilm, GameFilmResponse, GameVideo } from 'network/gameFilm';
+import { Video } from 'expo-av';
+import { MessageSquarePlus } from 'lucide-react-native';
+import { GameFilmResponse, GameVideo, getGameFilm, addVideoComment } from 'network/gameFilm';
 import { socket } from 'network/socket';
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
-import { ActivityIndicator } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, TouchableOpacity } from 'react-native';
 
 import AddGameFilmModal from './AddGameFilmModal';
+import AddVideoCommentModal from './AddVideoCommentModal';
 import Header from './Header';
 import VideoList from './VideoList';
 import VideoPlayer from './videoplayer/VideoPlayer';
@@ -16,13 +19,36 @@ const GameFilmDetails: React.FC = () => {
 	const playbookId = (router.params as { id: string })?.id;
 	const team = (router.params as { team: string })?.team;
 
+	const videoRef = useRef<Video | null>(null);
+
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [videoSources, setVideoSources] = useState<GameVideo[]>([]);
 	const [currentVideoIndex, setCurrentVideoIndex] = useState<number>(0);
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [isGameFilmModalOpen, setIsGameFilmModalOpen] = useState<boolean>(false);
+	const [isVideoCommentModalOpen, setIsVideoCommentModalOpen] = useState<boolean>(false);
+	const [currentVideoTimeStamp, setCurrentVideoTimestamp] = useState<number>(0);
+	const [videoComment, setVideoComment] = useState<string>('');
 
-	const toggleIsModalOpen = useCallback(() => {
-		setIsModalOpen(prev => !prev);
+	const pauseVideo = async () => {
+		if (videoRef.current) {
+			videoRef.current.setStatusAsync({ shouldPlay: false });
+		}
+	};
+
+	const getVideoPosition = async () => {
+		const videoPosition = await videoRef.current?.getStatusAsync();
+		//@ts-ignore
+		setCurrentVideoTimestamp(videoPosition?.positionMillis);
+	};
+
+	const toggleIsGameFilmModalOpen = useCallback(() => {
+		setIsGameFilmModalOpen(prev => !prev);
+	}, []);
+
+	const toggleIsVideoCommentModalOpen = useCallback(() => {
+		setIsVideoCommentModalOpen(prev => !prev);
+		pauseVideo();
+		getVideoPosition();
 	}, []);
 
 	useEffect(() => {
@@ -55,36 +81,110 @@ const GameFilmDetails: React.FC = () => {
 		};
 	}, []);
 
+	useEffect(() => {
+		socket.on('video_comment', newVideoComment => {
+			console.log('Video Comment', newVideoComment);
+
+			setVideoSources(prevVideoSources => {
+				const oldVideoIndex = prevVideoSources.findIndex(
+					video => video._id === newVideoComment._id
+				);
+
+				if (oldVideoIndex !== -1) {
+					const updatedVideoSources = [...prevVideoSources];
+					updatedVideoSources[oldVideoIndex] = newVideoComment;
+
+					return updatedVideoSources;
+				} else {
+					return [...prevVideoSources, newVideoComment];
+				}
+			});
+		});
+
+		return () => {
+			socket.off('video_comment');
+		};
+	}, []);
+
+	const handleAddVideoCommentSubmit = useCallback(async () => {
+		setIsLoading(true);
+
+		const videoId = videoSources[currentVideoIndex]._id;
+
+		const data = {
+			videoTimestamp: currentVideoTimeStamp,
+			comment: videoComment,
+			playerTags: [],
+		};
+
+		try {
+			await addVideoComment(playbookId, videoId, data);
+		} catch (error) {
+			console.error('Error adding video comment:', error);
+		} finally {
+			setIsLoading(false);
+
+			toggleIsVideoCommentModalOpen();
+		}
+	}, [
+		currentVideoIndex,
+		videoSources,
+		videoComment,
+		playbookId,
+		currentVideoTimeStamp,
+		toggleIsVideoCommentModalOpen,
+	]);
+
 	const hasVideoSources = useMemo(() => videoSources?.length > 0, [videoSources]);
 
-	console.log('hasVideoSources', videoSources);
 	return (
 		<>
 			{isLoading ? (
 				<ActivityIndicator animating />
 			) : (
 				<Box flex={1}>
-					<Header toggle={toggleIsModalOpen} />
+					<Header toggle={toggleIsGameFilmModalOpen} />
+
 					{hasVideoSources ? (
-						<VideoPlayer
-							videoSources={videoSources}
-							currentVideoIndex={currentVideoIndex}
-							setCurrentVideoIndex={setCurrentVideoIndex}
-						/>
+						<>
+							<VideoPlayer
+								videoRef={videoRef}
+								videoSources={videoSources}
+								currentVideoIndex={currentVideoIndex}
+								setCurrentVideoIndex={setCurrentVideoIndex}
+							/>
+
+							<TouchableOpacity
+								style={{ alignSelf: 'flex-start', padding: 8 }}
+								onPress={toggleIsVideoCommentModalOpen}>
+								<Icon as={MessageSquarePlus} size="lg" />
+							</TouchableOpacity>
+						</>
 					) : null}
+
 					<VideoList
 						videoSources={videoSources}
 						currentVideoIndex={currentVideoIndex}
 						setCurrentVideoIndex={setCurrentVideoIndex}
 					/>
+
 					<AddGameFilmModal
-						isOpen={isModalOpen}
-						toggle={toggleIsModalOpen}
+						isOpen={isGameFilmModalOpen}
+						toggle={toggleIsGameFilmModalOpen}
 						playbookId={playbookId}
 						team={team}
 					/>
 				</Box>
 			)}
+
+			<AddVideoCommentModal
+				isOpen={isVideoCommentModalOpen}
+				toggle={toggleIsVideoCommentModalOpen}
+				timestamp={currentVideoTimeStamp}
+				videoComment={videoComment}
+				setVideoComment={setVideoComment}
+				onSubmit={handleAddVideoCommentSubmit}
+			/>
 		</>
 	);
 };
