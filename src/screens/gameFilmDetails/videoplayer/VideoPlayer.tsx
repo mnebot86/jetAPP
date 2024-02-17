@@ -1,32 +1,34 @@
 import { Box } from '@gluestack-ui/themed';
-import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
+import { AVPlaybackStatus, ResizeMode, Video } from 'expo-av';
 import { GameVideo } from 'network/gameFilm';
-import React, { useRef, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, memo } from 'react';
 
 interface VideoPlayerProps {
+	videoRef: React.MutableRefObject<Video | null>;
 	videoSources: GameVideo[];
 	currentVideoIndex: number;
 	setCurrentVideoIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const VideoPlayer = ({
+	videoRef,
 	videoSources,
 	currentVideoIndex,
 	setCurrentVideoIndex,
 }: VideoPlayerProps) => {
-	const videoRef = useRef<Video | null>(null);
+	// const videoRef = useRef<Video | null>(null);
 
 	const preloadNextVideo = useCallback(async () => {
-		if (currentVideoIndex < videoSources.length - 1) {
+		if (currentVideoIndex < videoSources.length - 1 && videoRef.current) {
 			const nextVideoSource = videoSources[currentVideoIndex + 1];
 			if (nextVideoSource) {
 				await videoRef.current?.loadAsync({ uri: nextVideoSource.url }, {}, false);
 				await videoRef.current?.playAsync();
 			}
 		}
-	}, [currentVideoIndex, videoSources]);
+	}, [currentVideoIndex, videoSources, videoRef]);
 
-	const handleVideoEnd = async () => {
+	const handleVideoEnd = useCallback(async () => {
 		if (currentVideoIndex < videoSources.length - 1) {
 			setCurrentVideoIndex(prev => prev + 1);
 
@@ -34,10 +36,10 @@ const VideoPlayer = ({
 			preloadNextVideo();
 			await videoRef.current?.playAsync();
 		}
-	};
+	}, [currentVideoIndex, videoSources, videoRef, preloadNextVideo, setCurrentVideoIndex]);
 
 	useEffect(() => {
-		if (videoSources.length > 0) {
+		if (videoSources.length > 0 && videoRef.current) {
 			videoRef.current
 				?.loadAsync({ uri: videoSources[currentVideoIndex].url }, {}, false)
 				.then(() => videoRef.current?.playAsync())
@@ -46,7 +48,7 @@ const VideoPlayer = ({
 					console.error('Error loading or playing video:', error);
 				});
 		}
-	}, [currentVideoIndex, preloadNextVideo, videoSources]);
+	}, [currentVideoIndex, preloadNextVideo, videoSources, videoRef]);
 
 	return (
 		<Box>

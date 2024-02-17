@@ -5,9 +5,10 @@ interface GameFilmData {
 }
 
 export interface Comment {
+	videoTimestamp: number;
 	comment: string;
 	playerTags: string[];
-	createdBy: string;
+	createdBy: AccountUser;
 }
 
 export interface GameVideo {
@@ -16,15 +17,42 @@ export interface GameVideo {
 	comments: Comment[];
 }
 
+export interface AccountUser {
+	_id: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	password: string;
+	roles: string[];
+	position: string;
+	exportedGames: string[];
+	createdAt: string;
+	updatedAt: string;
+	group: string;
+}
+
 export interface GameFilmResponse {
 	team: string;
 	videos: GameVideo[];
 	date: string;
 	group: string;
 	_id: string;
-	createdAt: string;
+	createdAt: AccountUser;
 	updated: string;
 	error?: string | null;
+}
+
+export interface VideoResponse {
+	_id: string;
+	url: string;
+	createdAt: string;
+	updatedAt: string;
+	comments: Comment[];
+}
+
+export interface AddVideoCommentProps {
+	videoTimestamp: number;
+	comment: string;
 }
 
 export const createGameFilm = async (data: GameFilmData) => {
@@ -79,5 +107,23 @@ export const uploadGameFilms = async (formData: FormData, id: string) => {
 		const res = await server(config);
 
 		return res.data as string[];
+	});
+};
+
+export const addVideoComment = async (
+	gameFilmId: string,
+	videoId: string,
+	data: AddVideoCommentProps
+) => {
+	return apiRequest(async () => {
+		const config = {
+			method: 'post',
+			url: `game-films/${gameFilmId}/videos/${videoId}`,
+			data,
+		};
+
+		const res = await server(config);
+
+		return res.data as VideoResponse;
 	});
 };
