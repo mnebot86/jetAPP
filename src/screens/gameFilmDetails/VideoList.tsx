@@ -1,9 +1,10 @@
-import { AnimatedView } from '@gluestack-style/animation-resolver';
-import { styled } from '@gluestack-style/react';
-import { Box, Center, Text, Pressable } from '@gluestack-ui/themed';
+import { Box, Center, Image, Pressable, Text } from '@gluestack-ui/themed';
 import { GameVideo } from 'network/gameFilm';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FlatList } from 'react-native';
+import { useSelector } from 'react-redux';
+import { getColorMode } from 'store/selectors/appState';
+import { COLORS, themedStyle } from 'utils/styles';
 
 interface VideoListProps {
 	videoSources: GameVideo[];
@@ -12,64 +13,41 @@ interface VideoListProps {
 }
 
 const VideoList = ({ videoSources, currentVideoIndex, setCurrentVideoIndex }: VideoListProps) => {
+	const colorMode = useSelector(getColorMode);
+
 	const flatListRef = useRef<FlatList | null>(null);
 
-	const [isOpen, setIsOpen] = useState<boolean>(false);
-
 	const renderItem = ({ item, index }: { item: GameVideo; index: number }) => {
-		const shouldShowComments =
-			videoSources[index]?.comments?.length > 0 && index === currentVideoIndex;
-
-		const AnimatedBox = styled(AnimatedView, {
-			':initial': {
-				maxHeight: 0,
-			},
-			':animate': {
-				maxHeight: 10000,
-			},
-			':exit': {
-				maxHeight: 0,
-			},
-		});
+		const thumbNail = item.url.replace('mov', 'jpg');
 
 		const handleVideoPress = (index: number) => {
 			setCurrentVideoIndex(index);
-
-			if (shouldShowComments) {
-				setIsOpen(true);
-			}
 		};
 
 		return (
-			<Box
-				onLayout={event => {
-					const { height } = event.nativeEvent.layout;
-					console.log(height);
-				}}>
-				<Box borderColor="lightgray" borderBottomWidth={1}>
+			<Box>
+				<Box>
 					<Pressable
-						justifyContent="center"
-						p={10}
-						bg={currentVideoIndex === index ? 'royalblue' : '#fff'}
+						flexDirection="row"
+						paddingHorizontal={16}
+						paddingVertical={12}
+						bg={
+							currentVideoIndex === index
+								? 'royalblue'
+								: themedStyle(colorMode, COLORS.darkenBlack, COLORS.white)
+						}
+						borderRadius={8}
 						$active-bg="$primary400"
 						onPress={() => handleVideoPress(index)}>
-						<Text textAlign="center">{index + 1}</Text>
-						{/* {shouldShowComments ? <Icon as={MessageSquareWarning} /> : null} */}
+						<Image
+							width={99}
+							borderRadius={8}
+							source={{
+								uri: thumbNail,
+							}}
+							alt="Video Thumbnail"
+						/>
 					</Pressable>
-
-					<AnimatedBox
-						sx={{ display: isOpen && index === currentVideoIndex ? 'flex' : 'none' }}>
-						{item.comments?.map(({ comment, createdBy }, idx) => (
-							<Box key={`comment-${idx}`} marginVertical="$4" paddingHorizontal={10}>
-								<Text sub bold>
-									Couch {createdBy.firstName}
-								</Text>
-								<Text pl="$2" key={idx}>
-									{comment}
-								</Text>
-							</Box>
-						))}
-					</AnimatedBox>
 				</Box>
 			</Box>
 		);
@@ -87,7 +65,7 @@ const VideoList = ({ videoSources, currentVideoIndex, setCurrentVideoIndex }: Vi
 			flatListRef.current.scrollToIndex({
 				index: currentVideoIndex,
 				animated: true,
-				viewPosition: 0.5,
+				// viewPosition: 1,
 			});
 		}
 	}, [currentVideoIndex, videoSources]);
@@ -103,7 +81,7 @@ const VideoList = ({ videoSources, currentVideoIndex, setCurrentVideoIndex }: Vi
 				</Center>
 			}
 			keyExtractor={keyExtractor}
-			style={{ flex: 1 }}
+			style={{ flex: 1, marginTop: 8 }}
 		/>
 	);
 };

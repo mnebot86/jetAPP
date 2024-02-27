@@ -25,7 +25,7 @@ import { login } from 'network/auth';
 import React, { useCallback, useState } from 'react';
 import { Platform, KeyboardAvoidingView } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { setUser } from 'store/slices/user';
+import { setUser } from 'store/slices/appState';
 import { LoginResponse } from 'utils/interface';
 
 const Login = () => {

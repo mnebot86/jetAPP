@@ -1,4 +1,4 @@
-import { Box } from '@gluestack-ui/themed';
+import { Box, Text } from '@gluestack-ui/themed';
 import { GameFilmResponse, createGameFilm, getGameFilms } from 'network/gameFilm';
 import { socket } from 'network/socket';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -62,7 +62,7 @@ const GameFilm = () => {
 	}, []);
 
 	return (
-		<Box flex={1}>
+		<Box flex={1} bg="white" sx={{ _dark: { backgroundColor: '#121217' } }}>
 			<Header toggle={toggleModal} />
 
 			<GameFilmList gameFilms={gameFilms} />

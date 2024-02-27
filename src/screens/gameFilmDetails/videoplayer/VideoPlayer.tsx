@@ -1,7 +1,8 @@
-import { Box } from '@gluestack-ui/themed';
+import { Center, Spinner, Box } from '@gluestack-ui/themed';
 import { AVPlaybackStatus, ResizeMode, Video } from 'expo-av';
 import { GameVideo } from 'network/gameFilm';
-import React, { useCallback, useEffect, memo } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { COLORS } from 'utils/styles';
 
 interface VideoPlayerProps {
 	videoRef: React.MutableRefObject<Video | null>;
@@ -16,7 +17,7 @@ const VideoPlayer = ({
 	currentVideoIndex,
 	setCurrentVideoIndex,
 }: VideoPlayerProps) => {
-	// const videoRef = useRef<Video | null>(null);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const preloadNextVideo = useCallback(async () => {
 		if (currentVideoIndex < videoSources.length - 1 && videoRef.current) {
@@ -51,13 +52,28 @@ const VideoPlayer = ({
 	}, [currentVideoIndex, preloadNextVideo, videoSources, videoRef]);
 
 	return (
-		<Box>
+		<Box sx={{ position: 'relative', mt: 8 }}>
+			{isLoading ? (
+				<Center
+					zIndex={2}
+					w="$full"
+					h={250}
+					top={0}
+					left={0}
+					bg={COLORS.white}
+					sx={{ _dark: { bg: COLORS.darkenBlack, position: 'absolute' } }}>
+					<Spinner />
+				</Center>
+			) : null}
+
 			<Video
 				style={{ width: '100%', height: 250, backgroundColor: 'black' }}
 				source={{ uri: videoSources[currentVideoIndex].url }}
 				useNativeControls
 				resizeMode={ResizeMode.COVER}
 				ref={videoRef}
+				onLoadStart={() => setIsLoading(true)}
+				onLoad={() => setIsLoading(false)}
 				onPlaybackStatusUpdate={(
 					status: AVPlaybackStatus & { didJustFinish?: boolean }
 				) => {

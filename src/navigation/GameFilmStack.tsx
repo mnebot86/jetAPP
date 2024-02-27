@@ -1,49 +1,54 @@
-import { Ionicons } from '@expo/vector-icons';
-import { Box } from '@gluestack-ui/themed';
-import { useNavigation } from '@react-navigation/native';
+import { Icon } from '@gluestack-ui/themed';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { useCallback } from 'react';
+import { Upload } from 'lucide-react-native';
+import React from 'react';
+import { TouchableOpacity } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { GameFilm, GameFilmDetails } from 'screens';
+import { getColorMode } from 'store/selectors/appState';
+import { toggleIsGameFilmVideoUploadOpen } from 'store/slices/modals';
+import { COLORS, themedStyle } from 'utils/styles';
 
 const Stack = createStackNavigator();
 
-interface GameFilmDetailsParams {
-	id: string;
-	team: string;
-}
-
-type Navigation = any;
-
 const GameFilmStack = () => {
-	const navigation: Navigation = useNavigation();
+	const dispatch = useDispatch();
 
-	const navigateToSettings = useCallback(() => {
-		navigation.navigate('Settings');
-	}, [navigation]);
+	const colorMode = useSelector(getColorMode);
 
 	return (
 		<Stack.Navigator
-			initialRouteName="Roster"
+			initialRouteName="GameFilm"
 			screenOptions={{
-				headerRight: () => (
-					<Box mr="$4">
-						<Ionicons
-							name="settings"
-							size={24}
-							color="black"
-							onPress={navigateToSettings}
-						/>
-					</Box>
-				),
+				headerShadowVisible: false,
+				headerTintColor: themedStyle(colorMode, COLORS.white, COLORS.baseBlack),
+				headerTitleStyle: {
+					color: themedStyle(colorMode, COLORS.white, COLORS.baseBlack),
+				},
+				headerStyle: {
+					backgroundColor: themedStyle(colorMode, COLORS.darkenBlack, COLORS.white),
+				},
 			}}>
-			<Stack.Screen name="GameFilm" component={GameFilm} />
+			<Stack.Screen name="GameFilm" component={GameFilm} options={{ title: 'Game Weeks' }} />
 
 			<Stack.Screen
 				name="GameFilmDetails"
 				component={GameFilmDetails}
-				options={({ route }) => ({
-					title: (route.params as GameFilmDetailsParams)?.team,
-				})}
+				options={{
+					headerTitle: '',
+					headerRight: () => (
+						<TouchableOpacity
+							onPress={() => dispatch(toggleIsGameFilmVideoUploadOpen())}>
+							<Icon
+								as={Upload}
+								size="lg"
+								pr="$10"
+								color={COLORS.black}
+								sx={{ _dark: { color: COLORS.white } }}
+							/>
+						</TouchableOpacity>
+					),
+				}}
 			/>
 		</Stack.Navigator>
 	);

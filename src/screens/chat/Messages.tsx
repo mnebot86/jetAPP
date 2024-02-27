@@ -4,7 +4,7 @@ import { MessageResponse } from 'network/message';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { SectionList } from 'react-native';
 import { useSelector } from 'react-redux';
-import { getUserId } from 'store/selectors/user';
+import { getUserId } from 'store/selectors/appState';
 import { formattedDate, formattedTime } from 'utils/dateTime';
 
 interface MessagesProps {

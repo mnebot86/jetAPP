@@ -90,6 +90,16 @@ const AddGameFilmModal = ({ handleSubmit, error, toggle, isModalOpen }: AddGameF
 				</ModalHeader>
 
 				<ModalBody>
+					<FormControl flex={1} flexDirection="row" gap="$2">
+						<Input flex={1}>
+							<InputField
+								value={name}
+								onChangeText={text => setName(text)}
+								placeholder="Week 1"
+							/>
+						</Input>
+					</FormControl>
+
 					<FormControl mb="$8">
 						<FormControlLabel>
 							<FormControlLabelText>Opposing Team</FormControlLabelText>

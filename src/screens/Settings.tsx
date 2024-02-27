@@ -2,7 +2,7 @@ import { Box, Button, ButtonText, ButtonSpinner } from '@gluestack-ui/themed';
 import { logout } from 'network/auth';
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { clearUser } from 'store/slices/user';
+import { clearUser } from 'store/slices/appState';
 
 const Settings = () => {
 	const dispatch = useDispatch();
