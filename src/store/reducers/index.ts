@@ -1,9 +1,11 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import userReducer from '../slices/user';
+import appStateReducer from '../slices/appState';
+import modalsStateReducer from '../slices/modals';
 
 const rootReducer = combineReducers({
-	user: userReducer,
+	appState: appStateReducer,
+	modelsState: modalsStateReducer,
 });
 
 export default rootReducer;

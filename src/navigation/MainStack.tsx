@@ -1,9 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Box } from '@gluestack-ui/themed';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useNavigation } from '@react-navigation/native';
-import React, { useCallback } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Chat, Settings } from 'screens';
+import { getColorMode } from 'store/selectors/appState';
+import { COLORS, themedStyle } from 'utils/styles';
 
 import GameFilmStack from './GameFilmStack';
 import PlaybookStack from './PlaybookStack';
@@ -11,36 +12,42 @@ import RosterStack from './RosterStack';
 
 const Tab = createBottomTabNavigator();
 
-type Navigation = any;
-
 const MainStack = () => {
-	const navigation: Navigation = useNavigation();
-
-	const navigateToSettings = useCallback(() => {
-		navigation.navigate('Settings');
-	}, [navigation]);
+	const colorMode = useSelector(getColorMode);
 
 	return (
 		<Tab.Navigator
 			initialRouteName="GameFilm"
 			screenOptions={{
-				headerRight: () => (
-					<Box mr="$4">
-						<Ionicons
-							name="settings"
-							size={24}
-							color="black"
-							onPress={navigateToSettings}
-						/>
-					</Box>
-				),
+				tabBarIconStyle: {
+					marginTop: 8,
+				},
+				tabBarLabel: '',
+				headerTintColor: themedStyle(colorMode, COLORS.darkenBlack, COLORS.white),
+				headerStyle: {
+					backgroundColor: themedStyle(colorMode, COLORS.darkenBlack, COLORS.white),
+				},
+				tabBarStyle: {
+					backgroundColor: themedStyle(colorMode, COLORS.lightBlack, COLORS.white),
+				},
+				tabBarActiveTintColor: themedStyle(colorMode, COLORS.white, COLORS.baseBlack),
 			}}>
 			<Tab.Screen
 				name="RosterStack"
 				component={RosterStack}
 				options={{
 					title: 'Roster',
-					tabBarIcon: () => <Ionicons name="people" size={24} color="black" />,
+					tabBarIcon: ({ focused }) => (
+						<Ionicons
+							name="people"
+							size={24}
+							color={
+								focused
+									? themedStyle(colorMode, COLORS.white, COLORS.black) // light mode
+									: themedStyle(colorMode, COLORS.gray, COLORS.gold) // dark mode
+							}
+						/>
+					),
 					headerShown: false,
 				}}
 			/>
@@ -50,7 +57,17 @@ const MainStack = () => {
 				component={PlaybookStack}
 				options={{
 					title: 'Playbook',
-					tabBarIcon: () => <Ionicons name="book" size={24} color="black" />,
+					tabBarIcon: ({ focused }) => (
+						<Ionicons
+							name="book"
+							size={24}
+							color={
+								focused
+									? themedStyle(colorMode, COLORS.white, COLORS.black) // light mode
+									: themedStyle(colorMode, COLORS.gray, COLORS.gold) // dark mode
+							}
+						/>
+					),
 					headerShown: false,
 				}}
 			/>
@@ -60,7 +77,17 @@ const MainStack = () => {
 				component={GameFilmStack}
 				options={{
 					title: 'GameFilm',
-					tabBarIcon: () => <Ionicons name="film" size={24} color="black" />,
+					tabBarIcon: ({ focused }) => (
+						<Ionicons
+							name="film"
+							size={24}
+							color={
+								focused
+									? themedStyle(colorMode, COLORS.white, COLORS.black) // light mode
+									: themedStyle(colorMode, COLORS.gray, COLORS.gold) // dark mode
+							}
+						/>
+					),
 					headerShown: false,
 				}}
 			/>
@@ -69,7 +96,17 @@ const MainStack = () => {
 				name="Chat"
 				component={Chat}
 				options={{
-					tabBarIcon: () => <Ionicons name="chatbox-ellipses" size={24} color="black" />,
+					tabBarIcon: ({ focused }) => (
+						<Ionicons
+							name="chatbox-ellipses"
+							size={24}
+							color={
+								focused
+									? themedStyle(colorMode, COLORS.white, COLORS.black) // light mode
+									: themedStyle(colorMode, COLORS.gray, COLORS.gold) // dark mode
+							}
+						/>
+					),
 				}}
 			/>
 

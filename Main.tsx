@@ -2,15 +2,20 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AuthStack, MainStack } from 'navigation';
 import { verifyUser } from 'network/auth';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { AppState, AppStateStatus } from 'react-native'; // Import AppState
+import { AppState, AppStateStatus } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { getIsSignedIn } from 'store/selectors/user';
-import { setUser, clearUser } from 'store/slices/user';
+import { getIsSignedIn } from 'store/selectors/appState';
+import { setUser, clearUser, setColorMode } from 'store/slices/appState';
 import { LoginResponse } from 'utils/interface';
 
-const Main = () => {
+interface Props {
+	colorTheme: string;
+}
+
+const Main = ({ colorTheme }: Props) => {
 	const dispatch = useDispatch();
 	const isSignedIn = useSelector(getIsSignedIn);
+
 	const verifyUserInterval = useRef<NodeJS.Timeout | null>(null);
 
 	const fetchSession = useCallback(async () => {
@@ -64,6 +69,10 @@ const Main = () => {
 			}
 		};
 	}, [dispatch, fetchSession, handleAppStateChange, scheduleRefresh]);
+
+	useEffect(() => {
+		dispatch(setColorMode('dark'));
+	}, [dispatch]);
 
 	return <NavigationContainer>{isSignedIn ? <MainStack /> : <AuthStack />}</NavigationContainer>;
 };

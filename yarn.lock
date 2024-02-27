@@ -4439,11 +4439,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/bottom-tabs@npm:^6.5.11":
-  version: 6.5.11
-  resolution: "@react-navigation/bottom-tabs@npm:6.5.11"
+"@react-navigation/bottom-tabs@npm:^6.5.12":
+  version: 6.5.12
+  resolution: "@react-navigation/bottom-tabs@npm:6.5.12"
   dependencies:
-    "@react-navigation/elements": "npm:^1.3.21"
+    "@react-navigation/elements": "npm:^1.3.22"
     color: "npm:^4.2.3"
     warn-once: "npm:^0.1.0"
   peerDependencies:
@@ -4452,7 +4452,7 @@ __metadata:
     react-native: "*"
     react-native-safe-area-context: ">= 3.0.0"
     react-native-screens: ">= 3.0.0"
-  checksum: 63a3db2924a65757f39ee129caafabf1584e562b18648f9048e7dadcc00bf4adac4dedf13c7732737abb84d3f0cd7c5b3e8cda1431c67823c5f73793a59aeecc
+  checksum: 9f24897d891f0047cf5703e6ce2d0e4a87425b1574d501467a5b1a9336dd0e2f3c45520111d0f3279eb3012c20fb33b09e1b778c33ab854530c83508d46c80d9
   languageName: node
   linkType: hard
 
@@ -4481,6 +4481,18 @@ __metadata:
     react-native: "*"
     react-native-safe-area-context: ">= 3.0.0"
   checksum: aac75c134345eccc2618f397b755a13556e52fe56db85d20c9c43eec4a9aebab5998a0623c637076ce52124c195c97260b74d157538f34356559715748115ad1
+  languageName: node
+  linkType: hard
+
+"@react-navigation/elements@npm:^1.3.22":
+  version: 1.3.22
+  resolution: "@react-navigation/elements@npm:1.3.22"
+  peerDependencies:
+    "@react-navigation/native": ^6.0.0
+    react: "*"
+    react-native: "*"
+    react-native-safe-area-context: ">= 3.0.0"
+  checksum: e927e817df87145c9d3ef719d01bc1f2b8a3ecfa334a2803f6d47563e865a9c5f49c8f4ca63fbe45904cc08558e0b70bbc11d71cd62f9bff9d9724ea6a8a857d
   languageName: node
   linkType: hard
 
@@ -12498,7 +12510,7 @@ __metadata:
     "@gluestack-ui/themed": "npm:^1.0.31"
     "@react-native-community/datetimepicker": "npm:7.2.0"
     "@react-native-community/slider": "npm:4.4.2"
-    "@react-navigation/bottom-tabs": "npm:^6.5.11"
+    "@react-navigation/bottom-tabs": "npm:^6.5.12"
     "@react-navigation/native": "npm:^6.1.9"
     "@react-navigation/stack": "npm:^6.3.20"
     "@reduxjs/toolkit": "npm:^2.0.1"

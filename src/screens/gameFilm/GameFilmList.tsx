@@ -1,9 +1,9 @@
-import { Center, Text } from '@gluestack-ui/themed';
+import { HStack, Icon, Text, VStack } from '@gluestack-ui/themed';
 import { useNavigation } from '@react-navigation/native';
+import { MoveRight } from 'lucide-react-native';
 import { GameFilmResponse } from 'network/gameFilm';
 import React from 'react';
-import { ListRenderItem, FlatList, TouchableOpacity } from 'react-native';
-import { formattedDate } from 'utils/dateTime';
+import { FlatList, ListRenderItem, TouchableOpacity } from 'react-native';
 
 interface GameFilmListProps {
 	gameFilms: GameFilmResponse[] | [];
@@ -14,7 +14,7 @@ type Navigation = any;
 const GameFilmList: React.FC<GameFilmListProps> = ({ gameFilms }) => {
 	const navigation: Navigation = useNavigation();
 
-	const renderItem: ListRenderItem<GameFilmResponse> = ({ item }) => {
+	const renderItem: ListRenderItem<GameFilmResponse> = ({ item, index }) => {
 		return (
 			<TouchableOpacity
 				onPress={() =>
@@ -23,10 +23,16 @@ const GameFilmList: React.FC<GameFilmListProps> = ({ gameFilms }) => {
 						team: item.team,
 					})
 				}>
-				<Center p="$8" borderBottomWidth={2} borderBottomColor="lightgray">
-					<Text bold>{item.team}</Text>
-					<Text sub>{formattedDate(item.date, false)}</Text>
-				</Center>
+				<HStack p={14} justifyContent="space-between" alignItems="center">
+					<VStack>
+						<Text bold>{`Week ${index + 1}`}</Text>
+						<Text size="sm" color="#A1824A" sx={{ color: '#9E9EB8' }}>
+							{item.team}
+						</Text>
+					</VStack>
+
+					<Icon as={MoveRight} color="#1C170D" sx={{ _dark: { color: '#FFF' } }} />
+				</HStack>
 			</TouchableOpacity>
 		);
 	};
@@ -35,10 +41,15 @@ const GameFilmList: React.FC<GameFilmListProps> = ({ gameFilms }) => {
 		<FlatList<GameFilmResponse>
 			data={gameFilms}
 			renderItem={renderItem}
-			ListEmptyComponent={
-				<Center>
-					<Text>No GameFilms</Text>
-				</Center>
+			ListHeaderComponent={
+				<Text
+					textAlign="center"
+					mt="$4"
+					bold
+					color="#A1824A"
+					sx={{ _dark: { color: '#9E9EB8' } }}>
+					Select a week
+				</Text>
 			}
 			keyExtractor={(item: GameFilmResponse) => item._id}
 		/>
